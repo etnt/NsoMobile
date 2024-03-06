@@ -5,6 +5,7 @@ import android.util.Log
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 import se.kruskakli.nsomobile.releasenote.di.releaseNoteModule
+import se.kruskakli.nsomobile.settings.di.settingsModule
 
 
 class NsoMobileApplication() : Application() {
@@ -13,7 +14,7 @@ class NsoMobileApplication() : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@NsoMobileApplication)
-            modules(releaseNoteModule)
+            modules(releaseNoteModule, settingsModule)
         }
     }
 
