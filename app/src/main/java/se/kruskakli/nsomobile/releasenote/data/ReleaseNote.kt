@@ -1,5 +1,6 @@
 package se.kruskakli.nsomobile.releasenote.data
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /*
@@ -35,6 +36,8 @@ data class ReleaseNote(
 
 @Serializable
 sealed class TextPiece {
+    @Serializable @SerialName("Paragraph")
     data class Paragraph(val text: String) : TextPiece()
+    @Serializable @SerialName("BulletList")
     data class BulletList(val items: List<String>) : TextPiece()
 }
