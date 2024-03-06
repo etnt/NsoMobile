@@ -1,5 +1,13 @@
 # Notes
 
+## Using Koin for dependency injection
+
+Koin is started in the [NsoMobileApplication](app/src/main/java/se/kruskakli/nsomobile/NsoMobileApplication.kt)
+where it reads in e.g the [ReleaseNoteModule](app/src/main/java/se/kruskakli/nsomobile/releasenote/di/ReleaseNoteModule.kt);
+which specify what things is provided and can be injected by other code,
+ e.g the ViewModel in [ReleaseNoteScreen](app/src/main/java/se/kruskakli/nsomobile/releasenote/presentation/ReleaseNoteScreen.kt).
+ 
+
 ## Internet permissions and using HTTP
 
 Make sure to add the INTERNET permission in the Manifest file

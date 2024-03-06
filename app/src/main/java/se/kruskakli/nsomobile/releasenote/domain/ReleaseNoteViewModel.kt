@@ -18,14 +18,12 @@ class ReleaseNoteViewModel(
     val releaseNotes: StateFlow<List<ReleaseNote>> = _releaseNotes.asStateFlow()
 
     init {
-        Log.d("ReleaseNoteViewModel", "BEFORE loadReleaseNotes()")
         loadReleaseNotes()
     }
 
     private fun loadReleaseNotes() {
         viewModelScope.launch {
             val notes = repository.getReleaseNotes()
-            Log.d("ReleaseNoteViewModel", "ReleaseNotes: $notes")
             _releaseNotes.value = notes
         }
     }

@@ -31,7 +31,6 @@ import se.kruskakli.nsomobile.core.presentation.OutlinedCards
 fun ReleaseNoteScreen(
 
 ) {
-    Log.d("ReleaseNoteScreen", ">>>>> HERE <<<<<us")
     val viewModel = koinViewModel<ReleaseNoteViewModel>()
 
     val releaseNotes by viewModel.releaseNotes.collectAsState()
@@ -42,7 +41,6 @@ fun ReleaseNoteScreen(
             .padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Log.d("ReleaseNoteScreen", "ReleaseNotes: $releaseNotes")
         releaseNotes.forEach { releaseNote ->
             val cards: List<@Composable () -> Unit> = listOf(
                 {
