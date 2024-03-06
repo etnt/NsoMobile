@@ -18,6 +18,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.koin.androidx.compose.getViewModel
@@ -25,6 +26,7 @@ import org.koin.androidx.compose.koinViewModel
 import se.kruskakli.nsomobile.releasenote.data.TextPiece
 import se.kruskakli.nsomobile.releasenote.domain.ReleaseNoteViewModel
 import se.kruskakli.nsomobile.core.presentation.OutlinedCards
+import se.kruskakli.nsomobile.releasenote.data.ReleaseNote
 
 
 @Composable
@@ -32,9 +34,14 @@ fun ReleaseNoteScreen(
 
 ) {
     val viewModel = koinViewModel<ReleaseNoteViewModel>()
-
     val releaseNotes by viewModel.releaseNotes.collectAsState()
+    ReleaseNoteContent(releaseNotes)
+}
 
+@Composable
+fun ReleaseNoteContent(
+    releaseNotes: List<ReleaseNote>
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -125,4 +132,31 @@ fun TextDisplay(textPieces: List<TextPiece>) {
             Spacer(modifier = Modifier.height(8.dp))
         }
     }
+}
+
+@Preview
+@Composable
+fun ReleaseNoteScreenPreview() {
+    val releaseNotes = listOf(
+        ReleaseNote(
+            version = "0.2.0",
+            date = "2024-02-17",
+            textPieces = listOf(
+                TextPiece.Paragraph("This is the first real release of NSO Mobile. It is still very much a work in progress, but it is now at a point where it can be useful for some people. It contains the following features:"),
+                TextPiece.BulletList(
+                    items = listOf(
+                        "View alarms",
+                        "View devices",
+                        "View packages",
+                        "View users",
+                        "View groups",
+                        "View logs",
+                        "View settings",
+                        "View about"
+                    )
+                )
+            )
+        )
+    )
+    ReleaseNoteContent(releaseNotes)
 }
