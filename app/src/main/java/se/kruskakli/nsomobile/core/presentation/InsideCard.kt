@@ -1,7 +1,9 @@
 package se.kruskakli.nsomobile.core.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,6 +19,7 @@ import androidx.compose.ui.unit.dp
 fun InsideCard(
     header: String,
     fields: List<Field>,
+    extraContent: @Composable (() -> Unit)? = null,
     textColor: Color = MaterialTheme.colorScheme.onSurface,
     color: Color = MaterialTheme.colorScheme.surface,
     modifier: Modifier = Modifier
@@ -33,11 +36,17 @@ fun InsideCard(
                 .background(color)
                 .padding(start = 8.dp, top = 4.dp, bottom = 4.dp)
         ) {
-            Text(
-                text = header,
-                color = textColor,
-                style = MaterialTheme.typography.titleSmall
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = header,
+                    color = textColor,
+                    style = MaterialTheme.typography.titleSmall
+                )
+                extraContent?.invoke()
+            }
             fields.forEach { field ->
                 FieldComponent(
                     field = field,

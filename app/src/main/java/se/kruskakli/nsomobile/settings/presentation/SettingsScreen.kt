@@ -1,44 +1,46 @@
 package se.kruskakli.nsomobile.settings.presentation
 
+import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import org.koin.androidx.compose.koinViewModel
-import se.kruskakli.nsomobile.core.presentation.Field
+import se.kruskakli.nsomobile.core.presentation.CustomTextField
 import se.kruskakli.nsomobile.core.presentation.InsideCard
-import se.kruskakli.nsomobile.releasenote.domain.ReleaseNoteViewModel
-import se.kruskakli.nsomobile.releasenote.presentation.ReleaseNoteContent
-import se.kruskakli.nsomobile.settings.data.SettingsData
+import se.kruskakli.nsomobile.settings.domain.SettingsIntent
+import se.kruskakli.nsomobile.settings.domain.SettingsState
 import se.kruskakli.nsomobile.settings.domain.SettingsViewModel
 
 
@@ -46,29 +48,76 @@ import se.kruskakli.nsomobile.settings.domain.SettingsViewModel
 fun SettingsScreen(
 ) {
     val viewModel = koinViewModel<SettingsViewModel>()
-    val settings by viewModel.settings.collectAsState()
-    SettingsContent(settings)
+    val newState by viewModel.newState.collectAsState()
+
+    SettingsContent(
+        newState,
+        { field, value -> viewModel.handleIntent(SettingsIntent.SetFieldValue(field, value)) }
+    )
 }
 
 @Composable
 fun SettingsContent(
-    settings: List<SettingsData>
+    newState: SettingsState,
+    onChange: (String, String) -> Unit
+
 ) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
     ) {
-        LazyColumn {
-            items(settings) { setting ->
-                val fields = listOf(
-                    Field(label = "IP", value = setting.ip),
-                    Field(label = "Port", value = setting.port),
-                    Field(label = "Password", value = setting.passwd),
-                    Field(label = "User", value = setting.user)
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            Column(
+            ) {
+                /*
+                settings.map {
+                    InsideCard(
+                        header = it.name,
+                        fields = it.toFields().filter { field -> field.label != "Name" },
+                        extraContent = {
+                            IconButton(onClick = { Log.d("SettingScreen", "Remove ${it.name}") }) {
+                                Icon(Icons.Default.Delete, contentDescription = "Delete")
+                            }
+                        }
+                    )
+                }
+                */
+                Text(
+                    text = "Name",
+                    style = MaterialTheme.typography.labelMedium,
+                    modifier = Modifier
+                        .padding(start = 20.dp)
                 )
-                InsideCard(
-                    header = setting.name,
-                    fields = fields
+                CustomTextField(
+                    placeholder = "Name",
+                    text = newState.name,
+                    onValueChange = { onChange("name", it) },
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next,
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                    singleLine = true,
+                    isError = if (newState.nameError.isNullOrEmpty()) false else true,
+                    errorMessage = newState.nameError
+                )
+                Text(
+                    text = "IPv4 Address",
+                    style = MaterialTheme.typography.labelMedium,
+                    modifier = Modifier
+                        .padding(start = 20.dp)
+                )
+                CustomTextField(
+                    placeholder = "IP Address",
+                    text = newState.ip,
+                    onValueChange = { onChange("ip", it) },
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next,
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                    singleLine = true,
+                    isError = if (newState.ipError.isNullOrEmpty()) false else true,
+                    errorMessage = newState.ipError
                 )
             }
         }
@@ -81,14 +130,14 @@ fun SettingsContent(
 fun SettingsScreenPreview(
 ) {
     val settings = listOf(
-        SettingsData(
+        SettingsDataUI(
             name = "Blueberry",
             ip = "192.168.1.147",
             port = "8080",
             user = "admin",
             passwd = "adminPasswd"
         ),
-        SettingsData(
+        SettingsDataUI(
             name = "Orange",
             ip = "10.40.142.14",
             port = "8888",
@@ -96,5 +145,14 @@ fun SettingsScreenPreview(
             passwd = "operPasswd"
         )
     )
-    SettingsContent(settings)
+    SettingsContent(
+        SettingsState(
+            name = "Blueberry",
+            ip = "",
+            port = "",
+            user = "",
+            passwd = ""
+        ),
+        onChange = {field, value -> Log.d("SettingsScreen", "Field: $field, Value: $value")}
+    )
 }

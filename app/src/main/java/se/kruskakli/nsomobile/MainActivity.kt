@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import se.kruskakli.nsomobile.releasenote.di.releaseNoteModule
 import se.kruskakli.nsomobile.releasenote.presentation.ReleaseNoteScreen
+import se.kruskakli.nsomobile.settings.presentation.SettingsScreen
 import se.kruskakli.nsomobile.ui.theme.NsoMobileTheme
 
 class MainActivity : ComponentActivity() {
@@ -28,7 +29,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     Log.d("MainActivity", "Hello World!")
-                    ReleaseNoteScreen()
+                    //ReleaseNoteScreen()
+                    SettingsScreen()
                 }
             }
         }
