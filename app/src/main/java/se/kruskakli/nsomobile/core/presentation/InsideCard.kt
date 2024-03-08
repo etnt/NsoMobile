@@ -11,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -27,18 +28,17 @@ fun InsideCard(
     OutlinedCard(
         shape = RoundedCornerShape(8.dp),
         modifier = modifier
-            .fillMaxWidth()
-            .padding(top = 2.dp, bottom = 2.dp)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color)
-                .padding(start = 8.dp, top = 4.dp, bottom = 4.dp)
+                .padding(start = 8.dp, top = 2.dp, bottom = 2.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = header,

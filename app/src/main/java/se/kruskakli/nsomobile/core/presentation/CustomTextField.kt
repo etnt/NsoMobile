@@ -1,5 +1,8 @@
 package se.kruskakli.nsomobile.core.presentation
 
+// From: https://github.com/mohammadjoumani/validation_jetpack_compose_clean_architecture
+// https://medium.com/@mohammadjoumani/input-validation-with-clean-architecture-in-jetpack-compose-4225e2e86397
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource

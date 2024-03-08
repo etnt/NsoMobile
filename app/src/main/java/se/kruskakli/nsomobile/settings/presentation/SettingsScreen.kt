@@ -11,10 +11,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -38,6 +41,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import org.koin.androidx.compose.koinViewModel
 import se.kruskakli.nsomobile.core.presentation.CustomTextField
+import se.kruskakli.nsomobile.core.presentation.Divider
 import se.kruskakli.nsomobile.core.presentation.InsideCard
 import se.kruskakli.nsomobile.settings.domain.SettingsIntent
 import se.kruskakli.nsomobile.settings.domain.SettingsState
@@ -48,18 +52,25 @@ import se.kruskakli.nsomobile.settings.domain.SettingsViewModel
 fun SettingsScreen(
 ) {
     val viewModel = koinViewModel<SettingsViewModel>()
+    val settings by viewModel.settings.collectAsState()
     val newState by viewModel.newState.collectAsState()
 
     SettingsContent(
+        settings,
         newState,
-        { field, value -> viewModel.handleIntent(SettingsIntent.SetFieldValue(field, value)) }
+        { field, value -> viewModel.handleIntent(SettingsIntent.SetFieldValue(field, value)) },
+        { viewModel.handleIntent(SettingsIntent.SaveSettings) },
+        { name -> viewModel.handleIntent(SettingsIntent.RemoveSetting(name)) }
     )
 }
 
 @Composable
 fun SettingsContent(
+    settings: List<SettingsDataUI>,
     newState: SettingsState,
-    onChange: (String, String) -> Unit
+    onChange: (String, String) -> Unit,
+    onSave: () -> Unit,
+    onRemove: (String) -> Unit
 
 ) {
     Surface(
@@ -70,21 +81,29 @@ fun SettingsContent(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            Column(
-            ) {
-                /*
+            Column {
                 settings.map {
                     InsideCard(
                         header = it.name,
                         fields = it.toFields().filter { field -> field.label != "Name" },
                         extraContent = {
-                            IconButton(onClick = { Log.d("SettingScreen", "Remove ${it.name}") }) {
-                                Icon(Icons.Default.Delete, contentDescription = "Delete")
+                            IconButton(onClick = { onRemove(it.name) }) {
+                                Icon(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = "Delete",
+                                    modifier = Modifier.size(16.dp)
+                                )
                             }
-                        }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
                     )
                 }
-                */
+
+                Divider()
+                Spacer(modifier = Modifier.padding(8.dp))
+
                 Text(
                     text = "Name",
                     style = MaterialTheme.typography.labelMedium,
@@ -97,11 +116,14 @@ fun SettingsContent(
                     onValueChange = { onChange("name", it) },
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Next,
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
                     singleLine = true,
                     isError = if (newState.nameError.isNullOrEmpty()) false else true,
                     errorMessage = newState.nameError
                 )
+
                 Text(
                     text = "IPv4 Address",
                     style = MaterialTheme.typography.labelMedium,
@@ -109,16 +131,94 @@ fun SettingsContent(
                         .padding(start = 20.dp)
                 )
                 CustomTextField(
-                    placeholder = "IP Address",
+                    placeholder = "IPv4 address",
                     text = newState.ip,
                     onValueChange = { onChange("ip", it) },
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Next,
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
                     singleLine = true,
                     isError = if (newState.ipError.isNullOrEmpty()) false else true,
                     errorMessage = newState.ipError
                 )
+
+                Text(
+                    text = "Port Number",
+                    style = MaterialTheme.typography.labelMedium,
+                    modifier = Modifier
+                        .padding(start = 20.dp)
+                )
+                CustomTextField(
+                    placeholder = "Port Number",
+                    text = newState.port,
+                    onValueChange = { onChange("port", it) },
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    singleLine = true,
+                    isError = if (newState.portError.isNullOrEmpty()) false else true,
+                    errorMessage = newState.portError
+                )
+
+                Text(
+                    text = "User",
+                    style = MaterialTheme.typography.labelMedium,
+                    modifier = Modifier
+                        .padding(start = 20.dp)
+                )
+                CustomTextField(
+                    placeholder = "User",
+                    text = newState.user,
+                    onValueChange = { onChange("user", it) },
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    singleLine = true,
+                    isError = if (newState.userError.isNullOrEmpty()) false else true,
+                    errorMessage = newState.userError
+                )
+
+                Text(
+                    text = "Password",
+                    style = MaterialTheme.typography.labelMedium,
+                    modifier = Modifier
+                        .padding(start = 20.dp)
+                )
+                CustomTextField(
+                    placeholder = "Password",
+                    text = newState.passwd,
+                    onValueChange = { onChange("passwd", it) },
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    singleLine = true,
+                    isError = if (newState.passwdError.isNullOrEmpty()) false else true,
+                    errorMessage = newState.passwdError
+                )
+
+                Spacer(modifier = Modifier.padding(4.dp))
+
+                Button(
+                    onClick = { onSave() },
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                ) {
+                    Text(text = "Save")
+                }
             }
         }
     }
@@ -146,6 +246,7 @@ fun SettingsScreenPreview(
         )
     )
     SettingsContent(
+        settings,
         SettingsState(
             name = "Blueberry",
             ip = "",
@@ -153,6 +254,8 @@ fun SettingsScreenPreview(
             user = "",
             passwd = ""
         ),
-        onChange = {field, value -> Log.d("SettingsScreen", "Field: $field, Value: $value")}
+        onChange = {field, value -> Log.d("SettingsScreen", "Field: $field, Value: $value")},
+        onSave = {Log.d("SettingsScreen", "Save")},
+        onRemove = {name -> Log.d("SettingsScreen", "Remove: $name")}
     )
 }
