@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
@@ -81,8 +83,8 @@ fun SettingsContent(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            Column {
-                settings.map {
+            LazyColumn {
+                items(settings) {
                     InsideCard(
                         header = it.name,
                         fields = it.toFields().filter { field -> field.label != "Name" },
@@ -100,124 +102,125 @@ fun SettingsContent(
                             .padding(16.dp)
                     )
                 }
+                item {
+                    Divider()
+                    Spacer(modifier = Modifier.padding(8.dp))
 
-                Divider()
-                Spacer(modifier = Modifier.padding(8.dp))
-
-                Text(
-                    text = "Name",
-                    style = MaterialTheme.typography.labelMedium,
-                    modifier = Modifier
-                        .padding(start = 20.dp)
-                )
-                CustomTextField(
-                    placeholder = "Name",
-                    text = newState.name,
-                    onValueChange = { onChange("name", it) },
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    singleLine = true,
-                    isError = if (newState.nameError.isNullOrEmpty()) false else true,
-                    errorMessage = newState.nameError
-                )
-
-                Text(
-                    text = "IPv4 Address",
-                    style = MaterialTheme.typography.labelMedium,
-                    modifier = Modifier
-                        .padding(start = 20.dp)
-                )
-                CustomTextField(
-                    placeholder = "IPv4 address",
-                    text = newState.ip,
-                    onValueChange = { onChange("ip", it) },
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    singleLine = true,
-                    isError = if (newState.ipError.isNullOrEmpty()) false else true,
-                    errorMessage = newState.ipError
-                )
-
-                Text(
-                    text = "Port Number",
-                    style = MaterialTheme.typography.labelMedium,
-                    modifier = Modifier
-                        .padding(start = 20.dp)
-                )
-                CustomTextField(
-                    placeholder = "Port Number",
-                    text = newState.port,
-                    onValueChange = { onChange("port", it) },
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    singleLine = true,
-                    isError = if (newState.portError.isNullOrEmpty()) false else true,
-                    errorMessage = newState.portError
-                )
-
-                Text(
-                    text = "User",
-                    style = MaterialTheme.typography.labelMedium,
-                    modifier = Modifier
-                        .padding(start = 20.dp)
-                )
-                CustomTextField(
-                    placeholder = "User",
-                    text = newState.user,
-                    onValueChange = { onChange("user", it) },
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    singleLine = true,
-                    isError = if (newState.userError.isNullOrEmpty()) false else true,
-                    errorMessage = newState.userError
-                )
-
-                Text(
-                    text = "Password",
-                    style = MaterialTheme.typography.labelMedium,
-                    modifier = Modifier
-                        .padding(start = 20.dp)
-                )
-                CustomTextField(
-                    placeholder = "Password",
-                    text = newState.passwd,
-                    onValueChange = { onChange("passwd", it) },
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    singleLine = true,
-                    isError = if (newState.passwdError.isNullOrEmpty()) false else true,
-                    errorMessage = newState.passwdError
-                )
-
-                Spacer(modifier = Modifier.padding(4.dp))
-
-                Button(
-                    onClick = { onSave() },
-                    shape = RoundedCornerShape(8.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    Text(
+                        text = "Name",
+                        style = MaterialTheme.typography.labelMedium,
+                        modifier = Modifier
+                            .padding(start = 20.dp)
                     )
-                ) {
-                    Text(text = "Save")
+                    CustomTextField(
+                        placeholder = "Name",
+                        text = newState.name,
+                        onValueChange = { onChange("name", it) },
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Next,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        singleLine = true,
+                        isError = if (newState.nameError.isNullOrEmpty()) false else true,
+                        errorMessage = newState.nameError
+                    )
+
+                    Text(
+                        text = "IPv4 Address",
+                        style = MaterialTheme.typography.labelMedium,
+                        modifier = Modifier
+                            .padding(start = 20.dp)
+                    )
+                    CustomTextField(
+                        placeholder = "IPv4 address",
+                        text = newState.ip,
+                        onValueChange = { onChange("ip", it) },
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Next,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        singleLine = true,
+                        isError = if (newState.ipError.isNullOrEmpty()) false else true,
+                        errorMessage = newState.ipError
+                    )
+
+                    Text(
+                        text = "Port Number",
+                        style = MaterialTheme.typography.labelMedium,
+                        modifier = Modifier
+                            .padding(start = 20.dp)
+                    )
+                    CustomTextField(
+                        placeholder = "Port Number",
+                        text = newState.port,
+                        onValueChange = { onChange("port", it) },
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Next,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        singleLine = true,
+                        isError = if (newState.portError.isNullOrEmpty()) false else true,
+                        errorMessage = newState.portError
+                    )
+
+                    Text(
+                        text = "User",
+                        style = MaterialTheme.typography.labelMedium,
+                        modifier = Modifier
+                            .padding(start = 20.dp)
+                    )
+                    CustomTextField(
+                        placeholder = "User",
+                        text = newState.user,
+                        onValueChange = { onChange("user", it) },
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Next,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        singleLine = true,
+                        isError = if (newState.userError.isNullOrEmpty()) false else true,
+                        errorMessage = newState.userError
+                    )
+
+                    Text(
+                        text = "Password",
+                        style = MaterialTheme.typography.labelMedium,
+                        modifier = Modifier
+                            .padding(start = 20.dp)
+                    )
+                    CustomTextField(
+                        placeholder = "Password",
+                        text = newState.passwd,
+                        onValueChange = { onChange("passwd", it) },
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Next,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        singleLine = true,
+                        isError = if (newState.passwdError.isNullOrEmpty()) false else true,
+                        errorMessage = newState.passwdError
+                    )
+
+                    Spacer(modifier = Modifier.padding(4.dp))
+
+                    Button(
+                        onClick = { onSave() },
+                        shape = RoundedCornerShape(8.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
+                        )
+                    ) {
+                        Text(text = "Save")
+                    }
                 }
             }
         }
