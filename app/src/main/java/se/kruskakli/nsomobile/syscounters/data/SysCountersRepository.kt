@@ -18,6 +18,8 @@ interface SysCountersRepository {
     suspend fun getSysCounters(): HttpResponse
 }
 
+// FIXME: make the HTTP settings configurable!
+
 class SysCountersRepositoryImpl() : SysCountersRepository, KoinComponent {
     private val client: HttpClient by inject()
 

@@ -12,17 +12,21 @@ import io.ktor.client.plugins.logging.SIMPLE
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonNamingStrategy
 import org.koin.dsl.module
 
 
+//@OptIn(ExperimentalSerializationApi::class)
 val networkModule = module {
     single {
         HttpClient(CIO) {
             install(ContentNegotiation) {
                 json(Json {
-                    isLenient = true;
+                    isLenient = true
                     ignoreUnknownKeys = true
+                    //namingStrategy = JsonNamingStrategy.SnakeCase
                 })
             }
             install(Logging) {

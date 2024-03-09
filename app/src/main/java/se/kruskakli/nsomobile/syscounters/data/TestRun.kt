@@ -3,6 +3,7 @@ package se.kruskakli.nsomobile.syscounters.data
 import android.util.Log
 import io.ktor.client.call.body
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
 import okhttp3.internal.concurrent.TaskRunner.Companion.logger
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
@@ -24,7 +25,9 @@ object TestRun : KoinComponent {
         runBlocking {
             val result = sysCountersRepository.getSysCounters()
             val body =result.body<String>()
-            logger.info("Result: $body")
+            logger.info("Result BODY: $body")
+            val sysCounters = Json.decodeFromString<NsoSysCounters>(body)
+            logger.info("Result JSON: $sysCounters")
         }
         stopKoin()
     }
