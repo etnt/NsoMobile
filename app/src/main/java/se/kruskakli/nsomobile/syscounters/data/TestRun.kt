@@ -26,8 +26,10 @@ object TestRun : KoinComponent {
             val result = sysCountersRepository.getSysCounters()
             val body =result.body<String>()
             logger.info("Result BODY: $body")
-            val sysCounters = Json.decodeFromString<NsoSysCounters>(body)
-            logger.info("Result JSON: $sysCounters")
+            val nsoSysCounters = Json.decodeFromString<NsoSysCounters>(body)
+            logger.info("Result JSON: $nsoSysCounters")
+            var sysCountersUI = nsoSysCounters.sysCounters?.toUiModel()
+            logger.info("Result UI model: $sysCountersUI")
         }
         stopKoin()
     }
