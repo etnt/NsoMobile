@@ -6,8 +6,12 @@ import org.koin.dsl.module
 import se.kruskakli.nsomobile.settings.data.SettingsRepository
 import se.kruskakli.nsomobile.settings.data.SettingsRepositoryImpl
 import se.kruskakli.nsomobile.settings.domain.SettingsViewModel
+import se.kruskakli.nsomobile.settings.domain.SystemInfoRepository
+import se.kruskakli.nsomobile.settings.domain.SystemInfoRepositoryImpl
 
 val settingsModule = module {
     single<SettingsRepository> { SettingsRepositoryImpl(androidContext()) }
-    viewModel { SettingsViewModel(get()) }
+    single<SystemInfoRepository> { SystemInfoRepositoryImpl() }
+
+    viewModel { SettingsViewModel(get(), get()) }
 }

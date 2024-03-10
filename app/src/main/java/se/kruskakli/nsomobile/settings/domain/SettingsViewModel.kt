@@ -14,7 +14,8 @@ import se.kruskakli.nsomobile.settings.data.SettingsRepository
 import se.kruskakli.nsomobile.settings.presentation.SettingsDataUI
 
 class SettingsViewModel(
-    private val repository: SettingsRepository
+    private val repository: SettingsRepository,
+    private val systemInfoRepository: SystemInfoRepository
 ) : ViewModel() {
 
     // Create an observable state flow for the settings.
