@@ -2,6 +2,7 @@ package se.kruskakli.nsomobile.settings.presentation
 
 import se.kruskakli.nsomobile.core.presentation.Field
 import se.kruskakli.nsomobile.settings.data.SettingsData
+import se.kruskakli.nsomobile.settings.domain.SystemInfo
 
 // Example usage:
 // val settingsData = SettingsData(/* ... */)
@@ -40,6 +41,16 @@ data class SettingsDataUI(
             port = port,
             user = user,
             passwd = passwd
+        )
+    }
+
+    fun toSystemInfo(): SystemInfo {
+        return SystemInfo(
+            name = name,
+            ip = ip,
+            port = port,
+            user = user,
+            password = passwd
         )
     }
 }

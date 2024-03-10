@@ -38,6 +38,10 @@ class SettingsViewModel(
             _settings.value = sdata.map {
                 SettingsDataUI(it)
             }
+            // FIXME: This is a hack to set the system info from the first setting.
+            if (_settings.value.isNotEmpty()) {
+                systemInfoRepository.setSystemInfo(_settings.value[0].toSystemInfo())
+            }
         }
     }
 
@@ -57,7 +61,6 @@ class SettingsViewModel(
             is SettingsIntent.SaveSettings -> {
                 val state = _newState.value
                 if (state.nameError == null && state.ipError == null && state.portError == null && state.userError == null && state.passwdError == null) {
-
                     // Prepare the data to be saved
                     val settingsDataUIList = _settings.value
                     val settingsDataList =  settingsDataUIList.map { it.toSettingsData() }

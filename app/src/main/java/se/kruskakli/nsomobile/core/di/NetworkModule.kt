@@ -29,10 +29,9 @@ val networkModule = module {
                     //namingStrategy = JsonNamingStrategy.SnakeCase
                 })
             }
-            install(Logging) {
-                logger = Logger.SIMPLE
-                //level = LogLevel.ALL
-            }
+            //install(Logging) {
+            //    logger = Logger.SIMPLE
+            //}
             defaultRequest {
                 header(HttpHeaders.Accept, "application/yang-data+json")
                 // Add other headers here...
