@@ -24,7 +24,7 @@ object TestRun : KoinComponent {
         runBlocking {
             sysCountersRepository.getSysCounters (
                 "192.168.1.231",
-                "8080",
+                "9080",
                 "admin",
                 "admin",
                 onSuccess = { response: HttpResponse ->
