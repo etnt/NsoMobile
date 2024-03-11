@@ -20,7 +20,8 @@ object TestRun : KoinComponent {
 
         runBlocking {
             sysCountersRepository.getSysCounters (
-                "192.168.1.231",
+                "10.147.40.50",
+                //"192.168.1.231",
                 "9080",
                 "admin",
                 "admin"

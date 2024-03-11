@@ -42,8 +42,9 @@ android {
     buildFeatures {
         compose = true
     }
+    // See: https://developer.android.com/jetpack/androidx/releases/compose-kotlin
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.10"
     }
     packaging {
         resources {
@@ -72,20 +73,23 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation("org.slf4j:slf4j-android:1.7.36")
+    //implementation("org.slf4j:slf4j-android:1.7.36")
 
     // Kotlinx Serialization for JSON parsing
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 
-    val ktorVersion = "2.3.6"
+    val ktorVersion = "2.3.9"
+    val logbackVersion = "1.4.14"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
-    implementation("io.ktor:ktor-client-okhttp:$ktorVersion") {
-        exclude(group="org.slf4j", module="slf4j-api")
-        exclude(group="org.slf4j", module="slf4j-log4j12")
-    }
+    implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+    //{
+    //    exclude(group="org.slf4j", module="slf4j-api")
+    //    exclude(group="org.slf4j", module="slf4j-log4j12")
+    //}
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
     implementation("io.ktor:ktor-client-logging:$ktorVersion")
+    //implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
     implementation("io.ktor:ktor-client-json:$ktorVersion")
     implementation("io.ktor:ktor-client-serialization:$ktorVersion")

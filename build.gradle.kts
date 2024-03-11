@@ -7,6 +7,7 @@ plugins {
 }
 
 buildscript {
+    extra["kotlin_version"] = "1.9.22"
     repositories {
         // other repositories...
         mavenCentral()
