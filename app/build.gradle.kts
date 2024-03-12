@@ -74,23 +74,30 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     //implementation("org.slf4j:slf4j-android:1.7.36")
+    //implementation("org.slf4j:slf4j-android:2.0.7")
+    implementation("org.slf4j:slf4j-api:2.0.7")
+    implementation("uk.uuid.slf4j:slf4j-android:2.0.7-0")
 
     // Kotlinx Serialization for JSON parsing
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 
     val ktorVersion = "2.3.9"
     val logbackVersion = "1.4.14"
+    //implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
     //{
-    //    exclude(group="org.slf4j", module="slf4j-api")
-    //    exclude(group="org.slf4j", module="slf4j-log4j12")
+    //    exclude(group = "org.slf4j", module = "slf4j-api")
+    //    exclude(group = "org.slf4j", module = "slf4j-log4j12")
     //}
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
     implementation("io.ktor:ktor-client-logging:$ktorVersion")
-    //implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
+    //{
+    //    exclude(group = "org.slf4j", module = "slf4j-api")
+    //    exclude(group = "org.slf4j", module = "slf4j-log4j12")
+    //}
     implementation("io.ktor:ktor-client-json:$ktorVersion")
     implementation("io.ktor:ktor-client-serialization:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")

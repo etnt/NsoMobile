@@ -34,9 +34,9 @@ fun SysCountersContent(
     if (systemInfo != null) {
         Log.d("SysCountersContent", "systemInfo: $systemInfo")
         Log.d("SysCountersContent", "sysCounters: $sysCounters")
-        //Text(text = "SysCountersContent: ${systemInfo} -- ${sysCounters}")
+        Text(text = "SysCountersContent: ${systemInfo} -- ${sysCounters}")
+    } else {
+        Text(text = "SysCountersContent 2")
     }
-
-    Text(text = "SysCountersContent 2")
 
 }
