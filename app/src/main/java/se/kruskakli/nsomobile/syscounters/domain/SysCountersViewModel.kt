@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import se.kruskakli.nsomobile.settings.domain.SettingsIntent
 import se.kruskakli.nsomobile.settings.domain.SystemInfo
 import se.kruskakli.nsomobile.settings.domain.SystemInfoRepository
 import se.kruskakli.nsomobile.syscounters.data.SysCountersRepository
@@ -24,11 +25,19 @@ class SysCountersViewModel(
     private val _sysCounters = MutableStateFlow<SysCountersUi?>(null)
     val sysCounters: StateFlow<SysCountersUi?> = _sysCounters.asStateFlow()
 
+    fun handleIntent(intent: SysCountersIntent) {
+        when (intent) {
+            is SysCountersIntent.ShowSysCounters -> {
+                getSysCounters()
+            }
+        }
+    }
+
     fun resetNsoSysCounters() {
         _sysCounters.value = null
     }
 
-    fun getSysCounters() {
+    private fun getSysCounters() {
         Log.d("SysCountersViewModel", "getSysCounters")
         val systemInfo = systemInfoRepository.getSystemInfo()
         Log.d("SysCountersViewModel", "getSysCounters systemInfo: $systemInfo")
@@ -42,9 +51,11 @@ class SysCountersViewModel(
                     user = systemInfo.user,
                     password = systemInfo.password
                 ).onSuccess {
+                    Log.d("SysCountersViewModel", "getSysCounters onSuccess: $it")
                     val sysCountersUi = it.sysCounters?.toUiModel()
                     _sysCounters.value = sysCountersUi
                 }.onFailure {
+                    Log.d("SysCountersViewModel", "getSysCounters onFailure: $it")
                     _sysCounters.value = null
                 }
             }
