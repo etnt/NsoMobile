@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Build
 import androidx.compose.material.icons.outlined.Home
@@ -34,6 +35,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,29 +53,27 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 import se.kruskakli.nsomobile.Divider
 import se.kruskakli.nsomobile.R
+import se.kruskakli.nsomobile.main.domain.MainIntent
+import se.kruskakli.nsomobile.main.domain.MainViewModel
+import se.kruskakli.nsomobile.main.domain.TabPage
 import se.kruskakli.nsomobile.releasenote.presentation.ReleaseNoteScreen
 import se.kruskakli.nsomobile.settings.presentation.SettingsScreen
 import se.kruskakli.nsomobile.syscounters.presentation.SysCountersScreen
 
 
-enum class TabPage {
-    //Home,
-    Settings,
-    //Packages, Devices, Error, Alarms, About,
-    //Processes, Listeners, EtsTables, Allocators,
-    SysCounters,
-    ReleaseNotes
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
 
 ) {
+    val viewModel = koinViewModel<MainViewModel>()
+    val currentScreen = viewModel.currentScreen.collectAsState()
+
     var drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -82,7 +82,7 @@ fun MainScreen(
 
     val nsoDbgEnabled = false    // FIXME
 
-    var page by remember { mutableStateOf(TabPage.Settings) }
+    var page by remember { mutableStateOf(TabPage.Home) }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -157,7 +157,8 @@ fun MainScreen(
                                 // FIXME: viewModel.handleIntent(MainIntent.RefreshPage(page))
                             }) {
                                 Icon(
-                                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_flower),
+                                    imageVector = Icons.Filled.Refresh,
+                                    //imageVector = ImageVector.vectorResource(id = R.drawable.ic_flower),
                                     contentDescription = "Refresh")
                             }
                         }
@@ -192,21 +193,23 @@ fun MainScreen(
                 }
                  */
                 when (page) {
-                    /*
                     TabPage.Home -> {
+                        viewModel.handleIntent(MainIntent.EnterScreen(TabPage.Home))
                         WelcomePage()
                     }
-                     */
 
                     TabPage.Settings -> {
+                        viewModel.handleIntent(MainIntent.EnterScreen(TabPage.Settings))
                         SettingsScreen()
                     }
 
                     TabPage.ReleaseNotes -> {
+                        viewModel.handleIntent(MainIntent.EnterScreen(TabPage.ReleaseNotes))
                         ReleaseNoteScreen()
                     }
 
                     TabPage.SysCounters -> {
+                        viewModel.handleIntent(MainIntent.EnterScreen(TabPage.SysCounters))
                         /*
                         if (loading) {
                             LoadingState()
@@ -411,6 +414,12 @@ private fun MenuItems(): List<NavigationItem> {
             selectedIcon = ImageVector.vectorResource(id = R.drawable.ic_counters),
             unSelectedIcon = ImageVector.vectorResource(id = R.drawable.ic_counters),
         ),
+        NavigationItem(
+            title = "Release Notes",
+            page = TabPage.ReleaseNotes,
+            selectedIcon = RememberQuestionMark(),     // FIXME: better icon
+            unSelectedIcon = RememberQuestionMark()
+        ),
         /*
         NavigationItem(
             title = "About",
@@ -418,6 +427,7 @@ private fun MenuItems(): List<NavigationItem> {
             selectedIcon = RememberQuestionMark(),
             unSelectedIcon = RememberQuestionMark()
         ),
+
         NavigationItem(
             title = "Debug",
             selectedIcon = ImageVector.vectorResource(id = R.drawable.ic_bug),
