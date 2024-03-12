@@ -12,11 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import org.koin.androidx.compose.koinViewModel
-import se.kruskakli.nsomobile.releasenote.di.releaseNoteModule
-import se.kruskakli.nsomobile.releasenote.presentation.ReleaseNoteScreen
+import se.kruskakli.nsomobile.main.presentation.MainScreen
 import se.kruskakli.nsomobile.settings.domain.SettingsViewModel
-import se.kruskakli.nsomobile.settings.presentation.SettingsScreen
-import se.kruskakli.nsomobile.syscounters.presentation.SysCountersScreen
 import se.kruskakli.nsomobile.ui.theme.NsoMobileTheme
 
 class MainActivity : ComponentActivity() {
@@ -35,7 +32,8 @@ class MainActivity : ComponentActivity() {
                     val viewModel = koinViewModel<SettingsViewModel>()
                     //ReleaseNoteScreen()
                     //SettingsScreen()
-                    SysCountersScreen()
+                    //SysCountersScreen()
+                    MainScreen()
                 }
             }
         }
