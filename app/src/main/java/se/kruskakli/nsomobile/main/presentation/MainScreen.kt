@@ -57,11 +57,14 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import se.kruskakli.nsomobile.Divider
 import se.kruskakli.nsomobile.R
+import se.kruskakli.nsomobile.main.domain.EventChannel
 import se.kruskakli.nsomobile.main.domain.MainIntent
 import se.kruskakli.nsomobile.main.domain.MainViewModel
 import se.kruskakli.nsomobile.main.domain.TabPage
@@ -183,7 +186,11 @@ fun MainScreen(
                             }
                             IconButton(
                                 onClick = {
-                                // viewModel.handleIntent(MainIntent.RefreshPage(page))
+                                    // Trigger a refresh event for the current screen.
+                                    CoroutineScope(Dispatchers.Default).launch {
+                                        //Log.d("SystemDropdownMenu", "Triggering refresh for $currentScreen.value")
+                                        EventChannel.triggerRefresh(currentScreen.value)
+                                    }
                             }) {
                                 Icon(
                                     imageVector = Icons.Filled.Refresh,

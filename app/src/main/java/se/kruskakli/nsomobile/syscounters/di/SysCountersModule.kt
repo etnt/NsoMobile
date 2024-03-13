@@ -14,6 +14,5 @@ val sysCountersModule = module {
     single<NetworkRepository> { NetworkRepositoryImpl() }
     single<SystemInfoRepository> { SystemInfoRepositoryImpl() }
     single<SysCountersRepository> { SysCountersRepositoryImpl(get()) }
-    //single { SysCountersRepository(get()) }
-    viewModel { SysCountersViewModel(get(), get()) }
+    viewModel { SysCountersViewModel(get(), get(), get()) }
 }

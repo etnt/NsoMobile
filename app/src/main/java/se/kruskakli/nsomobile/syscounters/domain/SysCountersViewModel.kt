@@ -7,7 +7,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
+import se.kruskakli.nsomobile.main.domain.EventChannel
+import se.kruskakli.nsomobile.main.domain.TabPage
 import se.kruskakli.nsomobile.settings.domain.SettingsIntent
 import se.kruskakli.nsomobile.settings.domain.SystemInfo
 import se.kruskakli.nsomobile.settings.domain.SystemInfoRepository
@@ -16,7 +19,8 @@ import se.kruskakli.nsomobile.syscounters.data.toUiModel
 
 class SysCountersViewModel(
     private val sysCountersRepository: SysCountersRepository,
-    private val systemInfoRepository: SystemInfoRepository
+    private val systemInfoRepository: SystemInfoRepository,
+    private val eventChannel: EventChannel
 ) : ViewModel() {
 
     private val _systemInfo = MutableStateFlow(systemInfoRepository.getSystemInfo())
@@ -24,6 +28,24 @@ class SysCountersViewModel(
 
     private val _sysCounters = MutableStateFlow<SysCountersUi?>(null)
     val sysCounters: StateFlow<SysCountersUi?> = _sysCounters.asStateFlow()
+
+
+    init {
+        // We only listen for the refresh event that is relevant to us!
+        viewModelScope.launch {
+            EventChannel.refreshFlow
+                .filter { it == TabPage.SysCounters } // Listen only to relevant screen refreshes
+                .collect {
+                    refreshContent()
+                }
+        }
+    }
+
+    private fun refreshContent() {
+        //Log.d("SysCountersViewModel", "refreshContent")
+        getSysCounters()
+    }
+
 
     fun handleIntent(intent: SysCountersIntent) {
         when (intent) {
