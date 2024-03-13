@@ -10,8 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Divider() {
-    Spacer(modifier = Modifier
+fun Divider(
+    modifier: Modifier = Modifier
+) {
+    Spacer(modifier = modifier
         .height(1.dp)
         .fillMaxWidth()
         .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f))
