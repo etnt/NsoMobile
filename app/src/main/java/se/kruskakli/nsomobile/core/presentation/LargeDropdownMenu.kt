@@ -51,13 +51,13 @@ import se.kruskakli.nsomobile.ui.theme.NsoMobileTheme
  */
 
 // https://developer.android.com/reference/com/google/android/material/color/MaterialColors
-const val ALPHA_DISABLED = 0.38f
-const val ALPHA_DISABLED_LOW = 0.12f
-const val ALPHA_FULL = 1f
-const val ALPHA_LOW = 0.32f
-const val ALPHA_MEDIUM = 0.54f
+private const val ALPHA_DISABLED = 0.38f
+private const val ALPHA_DISABLED_LOW = 0.12f
+private const val ALPHA_FULL = 1f
+private const val ALPHA_LOW = 0.32f
+private const val ALPHA_MEDIUM = 0.54f
 
-fun <T> Boolean.select(trueOption: T, falseOption: T): T {
+private fun <T> Boolean.select(trueOption: T, falseOption: T): T {
     return if (this) trueOption else falseOption
 }
 

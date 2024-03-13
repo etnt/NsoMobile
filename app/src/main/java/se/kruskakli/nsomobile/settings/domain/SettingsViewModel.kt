@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import se.kruskakli.nsomobile.core.presentation.isIPv4Address
 import se.kruskakli.nsomobile.core.presentation.isNumber
@@ -22,12 +24,34 @@ class SettingsViewModel(
     private val _settings = MutableStateFlow<List<SettingsDataUI>>(emptyList())
     val settings: StateFlow<List<SettingsDataUI>> = _settings.asStateFlow()
 
+    private val _sysNames = MutableStateFlow<List<String>>(emptyList())
+    val sysNames: StateFlow<List<String>> = _sysNames.asStateFlow()
+
     // Create an observable state flow for a new Settings item.
     private val _newState = MutableStateFlow<SettingsState>(SettingsState())
     val newState: StateFlow<SettingsState> = _newState.asStateFlow()
 
+    // Create an observable state flow for the currently active system.
+    private val _currentSystem = MutableStateFlow<SystemInfo?>(systemInfoRepository.getSystemInfo())
+    val currentSystem: StateFlow<SystemInfo?> = _currentSystem.asStateFlow()
+
     init {
         loadSettings()
+        viewModelScope.launch {
+            _settings.map { settingsList ->
+                settingsList.map { it.name }
+            }.collect { names ->
+                _sysNames.value = names
+            }
+        }
+    }
+
+    private fun setCurrentSystem(systemName: String) {
+        val systemInfo = _settings.value.firstOrNull { it.name == systemName }?.toSystemInfo()
+        if (systemInfo != null) {
+            systemInfoRepository.setSystemInfo(systemInfo)
+            _currentSystem.value = systemInfo
+        }
     }
 
     // Load the settings from the repository (encrypted shared preferences)
@@ -38,15 +62,23 @@ class SettingsViewModel(
             _settings.value = sdata.map {
                 SettingsDataUI(it)
             }
-            // FIXME: This is a hack to set the system info from the first setting.
+            Log.d("SettingsViewModel", "loadSettings: ${_settings.value} , ${_settings.value.size} ")
             if (_settings.value.isNotEmpty()) {
-                systemInfoRepository.setSystemInfo(_settings.value[0].toSystemInfo())
+                if (_currentSystem.value == null) {
+                    // If no current system is set, set the first system in the list as the current system
+                    systemInfoRepository.setSystemInfo(_settings.value[0].toSystemInfo())
+                    _currentSystem.value = _settings.value[0].toSystemInfo()
+                }
             }
         }
     }
 
     fun handleIntent(intent: SettingsIntent) {
         when (intent) {
+
+            is SettingsIntent.SetCurrentSystemInfo -> {
+                setCurrentSystem(intent.systemName)
+            }
 
             is SettingsIntent.RemoveSetting -> {
                 viewModelScope.launch {

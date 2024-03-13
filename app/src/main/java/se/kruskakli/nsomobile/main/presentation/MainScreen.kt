@@ -1,6 +1,9 @@
 package se.kruskakli.nsomobile.main.presentation
 
 
+import android.util.Log
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,17 +14,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.Build
-import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -50,9 +53,11 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import se.kruskakli.nsomobile.Divider
@@ -61,6 +66,8 @@ import se.kruskakli.nsomobile.main.domain.MainIntent
 import se.kruskakli.nsomobile.main.domain.MainViewModel
 import se.kruskakli.nsomobile.main.domain.TabPage
 import se.kruskakli.nsomobile.releasenote.presentation.ReleaseNoteScreen
+import se.kruskakli.nsomobile.settings.domain.SettingsIntent
+import se.kruskakli.nsomobile.settings.domain.SettingsViewModel
 import se.kruskakli.nsomobile.settings.presentation.SettingsScreen
 import se.kruskakli.nsomobile.syscounters.presentation.SysCountersScreen
 
@@ -73,6 +80,17 @@ fun MainScreen(
 ) {
     val viewModel = koinViewModel<MainViewModel>()
     val currentScreen = viewModel.currentScreen.collectAsState()
+
+    val settingsViewModel = koinViewModel<SettingsViewModel>()
+    val currentSystem = settingsViewModel.currentSystem.collectAsState()
+    val sysNames = settingsViewModel.sysNames.collectAsState()
+    var sysNameIndex = -1
+    if (sysNames.value.isNotEmpty() && currentSystem.value != null) {
+        sysNameIndex = sysNames.value.indexOfFirst { it == currentSystem.value!!.name }
+    }
+    var systemIndex by remember { mutableStateOf(sysNameIndex) }
+
+    Log.d("MainScreen", "sysNames: ${sysNames.value}, currentSystem: ${currentSystem.value}, systemIndex: $systemIndex")
 
     var drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -153,8 +171,19 @@ fun MainScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text("NSO Mobile")
-                            IconButton(onClick = {
-                                // FIXME: viewModel.handleIntent(MainIntent.RefreshPage(page))
+                            if (systemIndex > -1) {
+                                SystemDropdownMenu(
+                                    sysNames = sysNames.value,
+                                    selectedName = systemIndex,
+                                    onNameSelected = { index ->
+                                        systemIndex = index
+                                        settingsViewModel.handleIntent(SettingsIntent.SetCurrentSystemInfo(sysNames.value[index]))
+                                    }
+                                )
+                            }
+                            IconButton(
+                                onClick = {
+                                // viewModel.handleIntent(MainIntent.RefreshPage(page))
                             }) {
                                 Icon(
                                     imageVector = Icons.Filled.Refresh,
@@ -296,6 +325,69 @@ fun MainScreen(
         }
     }
 }
+
+
+@Composable
+fun SystemDropdownMenu(
+    sysNames: List<String>,
+    selectedName: Int,
+    onNameSelected: (Int) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+        val interactionSource = remember { MutableInteractionSource() }
+
+    Box(
+        modifier = Modifier
+            .wrapContentSize()
+            .padding(8.dp)
+    ) {
+        Column(
+
+        ) {
+            Text(
+                text = "System:",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+            )
+            Text(
+                text = if (selectedName < sysNames.size) sysNames[selectedName] else "<no system>",
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontStyle = FontStyle.Italic,
+                    textDecoration = TextDecoration.Underline
+                ),
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier
+                    .padding(start = 8.dp)
+                    .clickable(onClick = { expanded = true })
+            )
+        }
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier
+                .padding(8.dp)
+        ) {
+            sysNames.forEachIndexed { index, item ->
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = item,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    },
+                    onClick = {
+                        onNameSelected(index)
+                        expanded = false
+                    },
+                    interactionSource = interactionSource
+                )
+            }
+        }
+    }
+}
+
+
 
 /*
  * Since the ModalDrawerSheet composable didn't support nested menus,
