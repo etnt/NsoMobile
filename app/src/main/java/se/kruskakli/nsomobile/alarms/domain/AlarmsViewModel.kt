@@ -9,13 +9,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
-import se.kruskakli.nso.data.alarms.toAlarmUi
 import se.kruskakli.nsomobile.alarms.data.AlarmsRepository
 import se.kruskakli.nsomobile.main.domain.EventChannel
 import se.kruskakli.nsomobile.main.domain.TabPage
 import se.kruskakli.nsomobile.settings.domain.SystemInfoRepository
-import se.kruskakli.nsomobile.syscounters.data.toUiModel
-import se.kruskakli.nsomobile.syscounters.domain.SysCountersIntent
 
 
 class AlarmsViewModel(

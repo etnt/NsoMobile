@@ -4,7 +4,8 @@ enum class TabPage {
     Home,
     Settings,
     Alarms,
-    //Packages, Devices, Error, About,
+    Packages,
+    // Devices, Error, About,
     //Processes, Listeners, EtsTables, Allocators,
     SysCounters,
     ReleaseNotes

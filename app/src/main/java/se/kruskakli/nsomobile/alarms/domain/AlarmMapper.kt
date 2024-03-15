@@ -1,6 +1,7 @@
-package se.kruskakli.nso.data.alarms
+package se.kruskakli.nsomobile.alarms.domain
 
-import se.kruskakli.nsomobile.alarms.domain.AlarmUi
+import se.kruskakli.nsomobile.alarms.data.Alarm
+import se.kruskakli.nsomobile.alarms.data.StatusChange
 
 fun Alarm.toAlarmUi(): AlarmUi {
     return AlarmUi(

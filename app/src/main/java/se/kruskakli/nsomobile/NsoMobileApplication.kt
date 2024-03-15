@@ -7,6 +7,7 @@ import org.koin.core.context.GlobalContext.startKoin
 import se.kruskakli.nsomobile.alarms.di.alarmsModule
 import se.kruskakli.nsomobile.core.di.networkModule
 import se.kruskakli.nsomobile.main.di.mainModule
+import se.kruskakli.nsomobile.nsopackage.di.nsoPackageModule
 import se.kruskakli.nsomobile.releasenote.di.releaseNoteModule
 import se.kruskakli.nsomobile.settings.di.settingsModule
 import se.kruskakli.nsomobile.syscounters.di.sysCountersModule
@@ -24,7 +25,8 @@ class NsoMobileApplication() : Application() {
                 settingsModule,
                 networkModule,
                 sysCountersModule,
-                alarmsModule)
+                alarmsModule,
+                nsoPackageModule)
         }
     }
 

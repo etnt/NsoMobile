@@ -1,6 +1,5 @@
 package se.kruskakli.nsomobile.alarms.data
 
-import se.kruskakli.nso.data.alarms.NsoAlarmList
 import se.kruskakli.nsomobile.core.data.ApiOperation
 import se.kruskakli.nsomobile.core.data.NetworkRepository
 

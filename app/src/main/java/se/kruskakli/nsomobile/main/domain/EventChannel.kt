@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 // An event channel that will be used to broadcast refresh events.
 
 object EventChannel {
-    private val _refreshChannel = Channel<TabPage>(Channel.CONFLATED)
+    private val _refreshChannel = Channel<TabPage>(Channel.BUFFERED)  // Buffer up to 10 events
     val refreshFlow: Flow<TabPage> = _refreshChannel.receiveAsFlow()
 
     suspend fun triggerRefresh(screen: TabPage) {

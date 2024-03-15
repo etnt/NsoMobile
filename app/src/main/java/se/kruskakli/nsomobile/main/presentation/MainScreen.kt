@@ -69,12 +69,14 @@ import se.kruskakli.nsomobile.main.domain.EventChannel
 import se.kruskakli.nsomobile.main.domain.MainIntent
 import se.kruskakli.nsomobile.main.domain.MainViewModel
 import se.kruskakli.nsomobile.main.domain.TabPage
+import se.kruskakli.nsomobile.nsopackage.presentation.PackagesScreen
 import se.kruskakli.nsomobile.releasenote.presentation.ReleaseNoteScreen
 import se.kruskakli.nsomobile.settings.domain.SettingsIntent
 import se.kruskakli.nsomobile.settings.domain.SettingsViewModel
 import se.kruskakli.nsomobile.settings.presentation.SettingsScreen
 import se.kruskakli.nsomobile.syscounters.presentation.SysCountersScreen
 import se.kruskakli.presentation.RememberAlarms
+import se.kruskakli.presentation.RememberPackages
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -265,6 +267,20 @@ fun MainScreen(
 
                          */
                             AlarmsScreen()
+                        /*
+                        }
+                        */
+                    }
+
+                    TabPage.Packages -> {
+                        viewModel.handleIntent(MainIntent.EnterScreen(TabPage.Packages))
+                        /*
+                        if (loading) {
+                            LoadingState()
+                        } else {
+
+                         */
+                        PackagesScreen()
                         /*
                         }
                         */
@@ -509,19 +525,22 @@ private fun MenuItems(): List<NavigationItem> {
             selectedIcon = RememberDevices(),
             unSelectedIcon = RememberDevices()
         ),
+         */
+
         NavigationItem(
             title = "Packages",
             page = TabPage.Packages,
             selectedIcon = RememberPackages(),
             unSelectedIcon = RememberPackages()
         ),
-         */
+
         NavigationItem(
             title = "System Counters",
             page = TabPage.SysCounters,
             selectedIcon = ImageVector.vectorResource(id = R.drawable.ic_counters),
             unSelectedIcon = ImageVector.vectorResource(id = R.drawable.ic_counters),
         ),
+
         NavigationItem(
             title = "Release Notes",
             page = TabPage.ReleaseNotes,

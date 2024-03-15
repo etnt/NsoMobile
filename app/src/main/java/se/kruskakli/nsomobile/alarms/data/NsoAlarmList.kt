@@ -1,4 +1,4 @@
-package se.kruskakli.nso.data.alarms
+package se.kruskakli.nsomobile.alarms.data
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

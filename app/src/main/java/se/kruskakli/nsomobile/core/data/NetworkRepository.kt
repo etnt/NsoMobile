@@ -65,7 +65,8 @@ class NetworkRepositoryImpl : NetworkRepository, KoinComponent {
                 }
             }
             val content = response.bodyAsText()
-            Json.decodeFromString(serializer, content)
+            val json = Json { ignoreUnknownKeys = true }
+            json.decodeFromString(serializer, content)
         }
     }
 }
