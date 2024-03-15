@@ -23,19 +23,19 @@ fun FieldComponent(
             .fillMaxWidth()
             .padding(start = 8.dp, top = 4.dp, end = 4.dp, bottom = 0.dp),
         horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.Top
     ) {
         Text(
             text = "${field.label}:",
             color = textColor,
-            style = MaterialTheme.typography.titleSmall
+            style = MaterialTheme.typography.titleMedium
         )
         Text(
             modifier = Modifier
                 .padding(start = 8.dp),
             text = field.value ?: "",
             color = textColor,
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.bodyMedium
         )
     }
 }

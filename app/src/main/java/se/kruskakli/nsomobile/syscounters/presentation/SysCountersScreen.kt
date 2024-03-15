@@ -43,7 +43,6 @@ fun SysCountersScreen(
 fun SysCountersContent(
     viewModel: SysCountersViewModel
 ) {
-    val systemInfo by viewModel.systemInfo.collectAsState()
     val sysCounters by viewModel.sysCounters.collectAsState()
 
     Box(

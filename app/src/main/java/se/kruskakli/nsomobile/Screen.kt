@@ -1,5 +1,5 @@
 package se.kruskakli.nsomobile
-
+/*
 sealed class Screen(val route: String) {
     object SettingsScreen : Screen("settings_screen")
     object ReleaseNoteScreen : Screen("release_notes_screen")
@@ -15,3 +15,4 @@ sealed class Screen(val route: String) {
     }
 
 }
+*/

@@ -64,6 +64,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import se.kruskakli.nsomobile.Divider
 import se.kruskakli.nsomobile.R
+import se.kruskakli.nsomobile.alarms.presentation.AlarmsScreen
 import se.kruskakli.nsomobile.main.domain.EventChannel
 import se.kruskakli.nsomobile.main.domain.MainIntent
 import se.kruskakli.nsomobile.main.domain.MainViewModel
@@ -73,7 +74,7 @@ import se.kruskakli.nsomobile.settings.domain.SettingsIntent
 import se.kruskakli.nsomobile.settings.domain.SettingsViewModel
 import se.kruskakli.nsomobile.settings.presentation.SettingsScreen
 import se.kruskakli.nsomobile.syscounters.presentation.SysCountersScreen
-
+import se.kruskakli.presentation.RememberAlarms
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -255,6 +256,21 @@ fun MainScreen(
                         //}
                     }
 
+                    TabPage.Alarms -> {
+                        viewModel.handleIntent(MainIntent.EnterScreen(TabPage.Alarms))
+                        /*
+                        if (loading) {
+                            LoadingState()
+                        } else {
+
+                         */
+                            AlarmsScreen()
+                        /*
+                        }
+                        */
+                    }
+
+
                     /*
                     TabPage.Packages -> {
                         viewModel.handleIntent(MainIntent.ShowPackages)
@@ -274,14 +290,6 @@ fun MainScreen(
                         }
                     }
 
-                    TabPage.Alarms -> {
-                        viewModel.handleIntent(MainIntent.ShowAlarms)
-                        if (loading) {
-                            LoadingState()
-                        } else {
-                            AlarmsScreen(nsoAlarms)
-                        }
-                    }
 
                     TabPage.About -> {
                         AboutPage(releaseNotes)
@@ -487,13 +495,14 @@ private fun MenuItems(): List<NavigationItem> {
             selectedIcon = Icons.Filled.Settings,
             unSelectedIcon = Icons.Outlined.Settings
         ),
-        /*
+
         NavigationItem(
             title = "Alarms",
             page = TabPage.Alarms,
             selectedIcon = RememberAlarms(),
             unSelectedIcon = RememberAlarms()
         ),
+        /*
         NavigationItem(
             title = "Devices",
             page = TabPage.Devices,

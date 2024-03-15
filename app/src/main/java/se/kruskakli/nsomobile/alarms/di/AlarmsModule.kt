@@ -6,7 +6,7 @@ import se.kruskakli.nsomobile.alarms.data.AlarmsRepository
 import se.kruskakli.nsomobile.alarms.data.AlarmsRepositoryImpl
 import se.kruskakli.nsomobile.alarms.domain.AlarmsViewModel
 
-val sysCountersModule = module {
+val alarmsModule = module {
     single<AlarmsRepository> { AlarmsRepositoryImpl(get()) }
     viewModel { AlarmsViewModel(get(), get(), get()) }
 }

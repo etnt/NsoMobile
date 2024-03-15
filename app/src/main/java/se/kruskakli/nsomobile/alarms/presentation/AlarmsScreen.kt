@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,23 +26,35 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import se.kruskakli.nso.domain.AlarmUi
 import androidx.compose.ui.text.font.FontStyle
+import org.koin.androidx.compose.koinViewModel
+import se.kruskakli.nsomobile.Divider
+import se.kruskakli.nsomobile.alarms.domain.AlarmUi
+import se.kruskakli.nsomobile.alarms.domain.AlarmsIntent
+import se.kruskakli.nsomobile.alarms.domain.AlarmsViewModel
+import se.kruskakli.nsomobile.core.presentation.Field
+import se.kruskakli.nsomobile.core.presentation.InsideCard
+import se.kruskakli.nsomobile.core.presentation.OutlinedCards
+
 
 
 @Composable
 fun AlarmsScreen(
-    nsoAlarms: List<AlarmUi>,
-    modifier: Modifier = Modifier
 ) {
-    Alarms(nsoAlarms)
+    val viewModel = koinViewModel<AlarmsViewModel>()
+    viewModel.handleIntent(AlarmsIntent.ShowAlarms)
+
+    AlarmsContent(
+        viewModel
+    )
 }
 
 @Composable
-fun Alarms(
-    alarms: List<AlarmUi>,
-    modifier: Modifier = Modifier
+fun AlarmsContent(
+    viewModel: AlarmsViewModel
 ) {
+    val nsoAlarms by viewModel.nsoAlarms.collectAsState()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -56,7 +69,7 @@ fun Alarms(
         ) {
             Divider()
             LazyColumn {
-                items(items = alarms) {
+                items(items = nsoAlarms) {
                     Alarm(it)
                 }
             }
@@ -83,6 +96,7 @@ fun Alarm(
                 horizontalAlignment = Alignment.Start
             ) {
                 AlarmsHeadField(alarm, toggleShow)
+
                 if (show) {
                     val fields = listOf(
                         Field("Last Alarm Text", alarm.lastAlarmText),
@@ -99,7 +113,7 @@ fun Alarm(
                             InsideCard(
                                 header = "Status Change:",
                                 fields = listOf(
-                                    Field("Alarm Text", it.alarmText),
+                                    Field("Alarm Text", it.alarmText ?: ""),
                                     Field("Event Time", it.eventTime),
                                     Field("Perceived Severity", it.perceivedSeverity),
                                     Field("Received Time", it.receivedTime)
@@ -117,6 +131,7 @@ fun Alarm(
                         color = MaterialTheme.colorScheme.surface
                     )
                 }
+                Divider()
             }
     }
 }
@@ -134,9 +149,9 @@ fun AlarmsHeadField(
             .clickable(onClick = { toggleShow() })
             .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.Top
     ) {
-        val text = buildAnnotatedString {
+        val text0 = buildAnnotatedString {
             withStyle(
                 style = SpanStyle(
                     fontWeight = FontWeight.Bold,
@@ -152,47 +167,69 @@ fun AlarmsHeadField(
             ) {
                 append(alarm.device)
             }
-            append("  Severity(")
-            withStyle(
-                style = SpanStyle(
-                    fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            ) {
-                append(alarm.lastPerceivedSeverity)
-            }
-            append(")")
-            append("  Cleared(")
-            withStyle(
-                style = SpanStyle(
-                    fontStyle = FontStyle.Italic,
-                    color = MaterialTheme.colorScheme.primary
-                )
-            ) {
-                append(alarm.isCleared)
-            }
-            withStyle(
-                style = SpanStyle(
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-            ) {
-                append(")  - ")
-            }
-            withStyle(
-                style = SpanStyle(
-                    fontStyle = FontStyle.Italic
-                )
-            ) {
-                append(alarm.lastAlarmText)
-            }
         }
         Text(
-            text = text,
+            text = text0,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(start = 4.dp, end = 4.dp)
         )
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(0.dp),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.Start
+        ) {
+            val text1 = buildAnnotatedString {
+                append("Severity(")
+                withStyle(
+                    style = SpanStyle(
+                        fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                ) {
+                    append(alarm.lastPerceivedSeverity)
+                }
+                append(")")
+                append("  Cleared(")
+                withStyle(
+                    style = SpanStyle(
+                        fontStyle = FontStyle.Italic,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                ) {
+                append(alarm.isCleared)
+                }
+                append(")")
+            }
+            Text(
+                text = text1,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(start = 6.dp, end = 2.dp)
+            )
+
+            val text2 = buildAnnotatedString {
+                withStyle(
+                    style = SpanStyle(
+                        fontStyle = FontStyle.Italic
+                    )
+                ) {
+                    append(alarm.lastAlarmText)
+                }
+            }
+            Text(
+                text = text2,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(start = 6.dp, end = 2.dp)
+            )
+        }
     }
 }
 

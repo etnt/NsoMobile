@@ -1,6 +1,7 @@
 package se.kruskakli.nsomobile.alarms.domain
 
 import android.util.Log
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +22,7 @@ class AlarmsViewModel(
     private val alarmsRepository: AlarmsRepository,
     private val systemInfoRepository: SystemInfoRepository,
     private val eventChannel: EventChannel
-) {
+): ViewModel() {
     private val _nsoAlarms = MutableStateFlow(listOf<AlarmUi>())
     val nsoAlarms: StateFlow<List<AlarmUi>> = _nsoAlarms.asStateFlow()
 
@@ -72,7 +73,7 @@ class AlarmsViewModel(
                     _nsoAlarms.value = newAlarms
                 }.onFailure {
                     Log.d("AlarmsViewModel", "getAlarmList onFailure: $it")
-                    _nsoAlarms.value = null
+                    _nsoAlarms.value = emptyList()
                 }
             }
         }

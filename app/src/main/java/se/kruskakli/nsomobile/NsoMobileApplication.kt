@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
+import se.kruskakli.nsomobile.alarms.di.alarmsModule
 import se.kruskakli.nsomobile.core.di.networkModule
 import se.kruskakli.nsomobile.main.di.mainModule
 import se.kruskakli.nsomobile.releasenote.di.releaseNoteModule
@@ -22,7 +23,8 @@ class NsoMobileApplication() : Application() {
                 releaseNoteModule,
                 settingsModule,
                 networkModule,
-                sysCountersModule)
+                sysCountersModule,
+                alarmsModule)
         }
     }
 
