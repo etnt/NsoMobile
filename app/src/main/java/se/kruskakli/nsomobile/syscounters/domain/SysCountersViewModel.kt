@@ -59,12 +59,8 @@ class SysCountersViewModel(
 
     private fun getSysCounters() {
         _sysCounters.value = DataState.Loading
-        Log.d("SysCountersViewModel", "getSysCounters")
         val systemInfo = systemInfoRepository.getSystemInfo()
-        Log.d("SysCountersViewModel", "getSysCounters systemInfo: $systemInfo")
         if (systemInfo != null) {
-            Log.d("SysCountersViewModel", "getSysCounters systemInfo: ${systemInfo}")
-            //_loading.value = true
             viewModelScope.launch(Dispatchers.IO) {
                 sysCountersRepository.getSysCounters(
                     host = systemInfo.ip,
