@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,7 +35,8 @@ import se.kruskakli.nsomobile.alarms.domain.AlarmsViewModel
 import se.kruskakli.nsomobile.core.presentation.Field
 import se.kruskakli.nsomobile.core.presentation.InsideCard
 import se.kruskakli.nsomobile.core.presentation.OutlinedCards
-
+import se.kruskakli.nsomobile.core.presentation.CenteredProgressIndicator
+import se.kruskakli.nsomobile.core.presentation.OnFailureMessageBox
 
 
 @Composable
@@ -58,12 +58,7 @@ fun AlarmsContent(
 
     nsoAlarms.DisplayResult(
         onLoading = {
-            Box(modifier = Modifier
-                .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
+            CenteredProgressIndicator()
         },
         onSuccess = {
             Box(
@@ -88,21 +83,12 @@ fun AlarmsContent(
             }
         },
         onFailure = {
-            Box(modifier = Modifier
-                .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = it,
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                )
-            }
+            OnFailureMessageBox(it)
         }
     )
 }
+
+
 
 @Composable
 fun Alarm(

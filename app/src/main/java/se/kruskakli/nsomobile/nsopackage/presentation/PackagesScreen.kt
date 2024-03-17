@@ -32,8 +32,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import org.koin.androidx.compose.koinViewModel
 import se.kruskakli.nsomobile.Divider
+import se.kruskakli.nsomobile.core.presentation.CenteredProgressIndicator
 import se.kruskakli.nsomobile.core.presentation.Field
 import se.kruskakli.nsomobile.core.presentation.InsideCard
+import se.kruskakli.nsomobile.core.presentation.OnFailureMessageBox
 import se.kruskakli.nsomobile.nsopackage.domain.PackageIntent
 import se.kruskakli.nsomobile.nsopackage.domain.PackageUi
 import se.kruskakli.nsomobile.nsopackage.domain.PackageViewModel
@@ -59,12 +61,7 @@ fun PackagesContent(
 
     nsoPackages.DisplayResult(
         onLoading = {
-            Box(modifier = Modifier
-                .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
+            CenteredProgressIndicator()
         },
         onSuccess = {
             Box(modifier = Modifier
@@ -87,18 +84,7 @@ fun PackagesContent(
             }
         },
         onFailure = {
-            Box(modifier = Modifier
-                .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = it,
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp)
-                )
-            }
+            OnFailureMessageBox(it)
         }
     )
 }
