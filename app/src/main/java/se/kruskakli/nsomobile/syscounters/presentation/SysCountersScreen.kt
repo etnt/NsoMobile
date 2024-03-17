@@ -17,9 +17,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.koin.androidx.compose.koinViewModel
+import se.kruskakli.nsomobile.core.presentation.CenteredProgressIndicator
 import se.kruskakli.nsomobile.core.presentation.Divider
 import se.kruskakli.nsomobile.core.presentation.FieldWithHelp
 import se.kruskakli.nsomobile.core.presentation.InsideCardWithHelp
+import se.kruskakli.nsomobile.core.presentation.OnFailureMessageBox
 import se.kruskakli.nsomobile.core.presentation.OutlinedCards
 import se.kruskakli.nsomobile.core.presentation.annotatedText
 import se.kruskakli.nsomobile.settings.domain.SystemInfo
@@ -45,28 +47,39 @@ fun SysCountersContent(
 ) {
     val sysCounters by viewModel.sysCounters.collectAsState()
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(0.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(0.dp),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.Start
-        ) {
-            Divider()
-            LazyColumn {
-                item { Transaction(sysCounters?.transaction) }
-                item { ServiceConflicts(sysCounters?.serviceConflicts) }
-                item { Cdb(sysCounters?.cdb) }
-                item { Device(sysCounters?.device) }
-                item { Session(sysCounters?.session) }
+    sysCounters.DisplayResult(
+        onLoading = {
+            CenteredProgressIndicator()
+        },
+        onSuccess = {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(0.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(0.dp),
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    Divider()
+                    LazyColumn {
+                        item { Transaction(it?.transaction) }
+                        item { ServiceConflicts(it?.serviceConflicts) }
+                        item { Cdb(it?.cdb) }
+                        item { Device(it?.device) }
+                        item { Session(it?.session) }
+                    }
+                }
             }
+        },
+        onFailure = {
+            OnFailureMessageBox(it)
         }
-    }
+    )
+
 }
 
 @Composable

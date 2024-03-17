@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
+import se.kruskakli.nsomobile.core.domain.DataState
 import se.kruskakli.nsomobile.main.domain.EventChannel
 import se.kruskakli.nsomobile.main.domain.TabPage
 import se.kruskakli.nsomobile.settings.domain.SettingsIntent
@@ -26,8 +27,8 @@ class SysCountersViewModel(
     private val _systemInfo = MutableStateFlow(systemInfoRepository.getSystemInfo())
     val systemInfo: StateFlow<SystemInfo?> = _systemInfo.asStateFlow()
 
-    private val _sysCounters = MutableStateFlow<SysCountersUi?>(null)
-    val sysCounters: StateFlow<SysCountersUi?> = _sysCounters.asStateFlow()
+    private val _sysCounters = MutableStateFlow<DataState<SysCountersUi?>>(DataState.Idle)
+    val sysCounters = _sysCounters.asStateFlow()
 
 
     init {
@@ -55,11 +56,9 @@ class SysCountersViewModel(
         }
     }
 
-    fun resetNsoSysCounters() {
-        _sysCounters.value = null
-    }
 
     private fun getSysCounters() {
+        _sysCounters.value = DataState.Loading
         Log.d("SysCountersViewModel", "getSysCounters")
         val systemInfo = systemInfoRepository.getSystemInfo()
         Log.d("SysCountersViewModel", "getSysCounters systemInfo: $systemInfo")
@@ -73,15 +72,18 @@ class SysCountersViewModel(
                     user = systemInfo.user,
                     password = systemInfo.password
                 ).onSuccess {
-                    Log.d("SysCountersViewModel", "getSysCounters onSuccess: $it")
                     val sysCountersUi = it.sysCounters?.toUiModel()
-                    _sysCounters.value = sysCountersUi
+                    DataState.Success(sysCountersUi).also { newState ->
+                        Log.d("SysCountersViewModel", "getSysCounters newState: ${newState.getSuccesData()}")
+                        _sysCounters.value = newState
+                    }
                 }.onFailure {
-                    Log.d("SysCountersViewModel", "getSysCounters onFailure: $it")
-                    _sysCounters.value = null
+                    DataState.Failure(it).also { newState ->
+                        Log.d("SysCountersViewModel", "getSysCounters onFailure: ${newState.getFailureMessage()}")
+                        _sysCounters.value = newState
+                    }
                 }
             }
         }
-        Log.d("SysCountersViewModel", "getSysCounters end")
     }
 }
