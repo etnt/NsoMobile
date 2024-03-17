@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import se.kruskakli.nsomobile.alarms.domain.AlarmUi
 import se.kruskakli.nsomobile.alarms.domain.AlarmsIntent
 import se.kruskakli.nsomobile.core.data.ApiOperation
+import se.kruskakli.nsomobile.core.domain.DataState
 import se.kruskakli.nsomobile.main.domain.EventChannel
 import se.kruskakli.nsomobile.main.domain.TabPage
 import se.kruskakli.nsomobile.nsopackage.data.NsoPackageRepository
@@ -23,8 +24,8 @@ class PackageViewModel(
     private val eventChannel: EventChannel
 ): ViewModel() {
 
-    private val _nsoPackages = MutableStateFlow(listOf<PackageUi>())
-    val nsoPackages: StateFlow<List<PackageUi>> = _nsoPackages.asStateFlow()
+    private val _nsoPackages = MutableStateFlow<DataState<List<PackageUi>>>(DataState.Idle)
+    val nsoPackages = _nsoPackages.asStateFlow()
 
     // To make it possible to enable/disable the debug menus
     private val _nsoDbgEnabled = MutableStateFlow(false)
@@ -55,6 +56,7 @@ class PackageViewModel(
     }
 
     private fun getNsoPackages() {
+        DataState.Loading.also { _nsoPackages.value = it }
         val systemInfo = systemInfoRepository.getSystemInfo()
         if (systemInfo != null) {
             viewModelScope.launch {
@@ -66,13 +68,13 @@ class PackageViewModel(
                 ).onSuccess {
                     val newPackages = mutableListOf<PackageUi>()
                     it.tailfNcsPackages.nsoPackages.forEach() {
-                        Log.d("PackageViewModel", "getNsoPackages: $it")
                         val p = it.toPackageUi()
                         newPackages.add(p)
                     }
-                    _nsoPackages.value = newPackages
-                    //_loading.value = false
-
+                    DataState.Success(newPackages).also { newState ->
+                        Log.d("PackageViewModel", "getNsoPackages onSuccess: ${newState.getSuccesData()}")
+                        _nsoPackages.value = newState
+                    }
                     // Check if the nso_dbg package is installed
                     newPackages.forEach { packageUi ->
                         if (packageUi.name == "nso_dbg") {
@@ -81,10 +83,11 @@ class PackageViewModel(
                         }
                     }
                 }.onFailure {
-                    Log.d("PackageViewModel", "getNsoPackages onFailure: $it")
-                    _nsoPackages.value = emptyList()
+                    DataState.Failure(it).also { newState ->
+                        Log.d("PackageViewModel", "getNsoPackages onFailure: ${newState.getFailureMessage()}")
+                        _nsoPackages.value = newState
+                    }
                     _nsoDbgEnabled.value = false
-                    //_loading.value = false
                 }
             }
         }
