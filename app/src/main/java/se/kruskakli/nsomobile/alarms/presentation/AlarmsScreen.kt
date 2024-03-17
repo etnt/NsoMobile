@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -55,26 +56,52 @@ fun AlarmsContent(
 ) {
     val nsoAlarms by viewModel.nsoAlarms.collectAsState()
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(0.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(0.dp),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.Start
-        ) {
-            Divider()
-            LazyColumn {
-                items(items = nsoAlarms) {
-                    Alarm(it)
+    nsoAlarms.DisplayResult(
+        onLoading = {
+            Box(modifier = Modifier
+                .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        },
+        onSuccess = {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(0.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(0.dp),
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    Divider()
+                    LazyColumn {
+                        items(items = it) {
+                            Alarm(it)
+                        }
+                    }
                 }
             }
+        },
+        onFailure = {
+            Box(modifier = Modifier
+                .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                )
+            }
         }
-    }
+    )
 }
 
 @Composable

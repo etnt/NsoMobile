@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import se.kruskakli.nsomobile.alarms.data.AlarmsRepository
+import se.kruskakli.nsomobile.core.domain.DataState
 import se.kruskakli.nsomobile.main.domain.EventChannel
 import se.kruskakli.nsomobile.main.domain.TabPage
 import se.kruskakli.nsomobile.settings.domain.SystemInfoRepository
@@ -20,8 +21,8 @@ class AlarmsViewModel(
     private val systemInfoRepository: SystemInfoRepository,
     private val eventChannel: EventChannel
 ): ViewModel() {
-    private val _nsoAlarms = MutableStateFlow(listOf<AlarmUi>())
-    val nsoAlarms: StateFlow<List<AlarmUi>> = _nsoAlarms.asStateFlow()
+    private val _nsoAlarms = MutableStateFlow<DataState<List<AlarmUi>>>(DataState.Idle)
+    val nsoAlarms = _nsoAlarms.asStateFlow()
 
     init {
         // We only listen for the refresh event that is relevant to us!
@@ -48,11 +49,9 @@ class AlarmsViewModel(
     }
 
     private fun getAlarmList() {
+        DataState.Loading.also { _nsoAlarms.value = it }
         val systemInfo = systemInfoRepository.getSystemInfo()
-        Log.d("AlarmsViewModel", "getAlarmList systemInfo: $systemInfo")
         if (systemInfo != null) {
-            Log.d("AlarmsViewModel", "getAlarmList systemInfo: ${systemInfo}")
-            //_loading.value = true
             viewModelScope.launch(Dispatchers.IO) {
                 alarmsRepository.getAlarmList(
                     host = systemInfo.ip,
@@ -60,21 +59,23 @@ class AlarmsViewModel(
                     user = systemInfo.user,
                     password = systemInfo.password
                 ).onSuccess {
-                    Log.d("AlarmsViewModel", "getAlarmList onSuccess: $it")
                     val newAlarms = mutableListOf<AlarmUi>()
                     it.nsoAlarmList.alarm.forEach() {
-                        //Log.d("MainViewModel", "getNsoDevices BODY: ${it}")
                         val p = it.toAlarmUi()
                         newAlarms.add(p)
                     }
-                    _nsoAlarms.value = newAlarms
+                    DataState.Success(newAlarms).also { newState ->
+                        Log.d("AlarmsViewModel", "getAlarmList newState: ${newState.getSuccesData()}")
+                        _nsoAlarms.value = newState
+                    }
                 }.onFailure {
-                    Log.d("AlarmsViewModel", "getAlarmList onFailure: $it")
-                    _nsoAlarms.value = emptyList()
+                    DataState.Failure(it).also { newState ->
+                        Log.d("AlarmsViewModel", "getAlarmList onFailure: ${newState.getFailureMessage()}")
+                        _nsoAlarms.value = newState
+                    }
                 }
             }
         }
-        Log.d("SysCountersViewModel", "getSysCounters end")
     }
 
 }
