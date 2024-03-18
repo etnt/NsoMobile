@@ -65,6 +65,7 @@ import org.koin.androidx.compose.koinViewModel
 import se.kruskakli.nsomobile.Divider
 import se.kruskakli.nsomobile.R
 import se.kruskakli.nsomobile.alarms.presentation.AlarmsScreen
+import se.kruskakli.nsomobile.devices.presentation.DevicesScreen
 import se.kruskakli.nsomobile.main.domain.EventChannel
 import se.kruskakli.nsomobile.main.domain.MainIntent
 import se.kruskakli.nsomobile.main.domain.MainViewModel
@@ -249,63 +250,25 @@ fun MainScreen(
 
                     TabPage.SysCounters -> {
                         viewModel.handleIntent(MainIntent.EnterScreen(TabPage.SysCounters))
-                        /*
-                        if (loading) {
-                            LoadingState()
-                        } else {
-                         */
-                            SysCountersScreen()
-                        //}
+                        SysCountersScreen()
                     }
 
                     TabPage.Alarms -> {
                         viewModel.handleIntent(MainIntent.EnterScreen(TabPage.Alarms))
-                        /*
-                        if (loading) {
-                            LoadingState()
-                        } else {
-
-                         */
-                            AlarmsScreen()
-                        /*
-                        }
-                        */
+                        AlarmsScreen()
                     }
 
                     TabPage.Packages -> {
                         viewModel.handleIntent(MainIntent.EnterScreen(TabPage.Packages))
-                        /*
-                        if (loading) {
-                            LoadingState()
-                        } else {
-
-                         */
                         PackagesScreen()
-                        /*
-                        }
-                        */
-                    }
-
-
-                    /*
-                    TabPage.Packages -> {
-                        viewModel.handleIntent(MainIntent.ShowPackages)
-                        if (loading) {
-                            LoadingState()
-                        } else {
-                            PackagesScreen(nsoPackages)
-                        }
                     }
 
                     TabPage.Devices -> {
-                        viewModel.handleIntent(MainIntent.ShowDevices)
-                        if (loading) {
-                            LoadingState()
-                        } else {
-                            DevicesScreen(nsoDevices)
-                        }
+                        viewModel.handleIntent(MainIntent.EnterScreen(TabPage.Devices))
+                        DevicesScreen()
                     }
 
+                    /*
 
                     TabPage.About -> {
                         AboutPage(releaseNotes)
