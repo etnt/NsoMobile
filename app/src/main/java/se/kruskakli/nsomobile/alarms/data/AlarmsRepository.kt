@@ -28,7 +28,8 @@ class AlarmsRepositoryImpl(
             user,
             password,
             "restconf/data/tailf-ncs-alarms:alarms/alarm-list",
-            NsoAlarmList.serializer()
+            NsoAlarmList.serializer(),
+            emptyMap()
         )
     }
 }

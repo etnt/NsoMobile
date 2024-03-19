@@ -77,6 +77,7 @@ import se.kruskakli.nsomobile.settings.domain.SettingsViewModel
 import se.kruskakli.nsomobile.settings.presentation.SettingsScreen
 import se.kruskakli.nsomobile.syscounters.presentation.SysCountersScreen
 import se.kruskakli.presentation.RememberAlarms
+import se.kruskakli.presentation.RememberDevices
 import se.kruskakli.presentation.RememberPackages
 
 
@@ -481,14 +482,13 @@ private fun MenuItems(): List<NavigationItem> {
             selectedIcon = RememberAlarms(),
             unSelectedIcon = RememberAlarms()
         ),
-        /*
+
         NavigationItem(
             title = "Devices",
             page = TabPage.Devices,
             selectedIcon = RememberDevices(),
             unSelectedIcon = RememberDevices()
         ),
-         */
 
         NavigationItem(
             title = "Packages",

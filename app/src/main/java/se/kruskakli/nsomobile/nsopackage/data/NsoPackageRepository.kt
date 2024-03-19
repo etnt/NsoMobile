@@ -30,7 +30,8 @@ class NsoPackageRepositoryImpl(
             user,
             password,
             "restconf/data/tailf-ncs:packages",
-            NsoPackages.serializer()
+            NsoPackages.serializer(),
+            emptyMap()
         )
     }
 }

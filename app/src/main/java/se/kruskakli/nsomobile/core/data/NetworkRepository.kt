@@ -1,5 +1,6 @@
 package se.kruskakli.nsomobile.core.data
 
+import android.util.Log
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.call.receive
@@ -25,7 +26,8 @@ interface NetworkRepository {
         userStr: String,
         passwordStr: String,
         path: String,
-        serializer: KSerializer<T>
+        serializer: KSerializer<T>,
+        queryParams: Map<String, String>
     ): ApiOperation<T>
 }
 
@@ -46,7 +48,8 @@ class NetworkRepositoryImpl : NetworkRepository, KoinComponent {
         userStr: String,
         passwordStr: String,
         path: String,
-        serializer: KSerializer<T>
+        serializer: KSerializer<T>,
+        queryParams: Map<String, String>
     ): ApiOperation<T> {
 
         return safeApiCall {
@@ -57,7 +60,9 @@ class NetworkRepositoryImpl : NetworkRepository, KoinComponent {
                     host = hostStr
                     port = portStr.toInt()
                     path(path)
-                    //appendPathSegments("restconf", "data", "tailf-ncs:metric", "sysadmin", "counter")
+                    queryParams.forEach { (key, value) ->
+                        parameters.append(key, value)
+                    }
                 }
                 basicAuth(userStr, passwordStr)
                 headers {
@@ -65,6 +70,7 @@ class NetworkRepositoryImpl : NetworkRepository, KoinComponent {
                 }
             }
             val content = response.bodyAsText()
+            Log.d("NetworkRepository", "apiCall: content: $content")
             val json = Json { ignoreUnknownKeys = true }
             json.decodeFromString(serializer, content)
         }

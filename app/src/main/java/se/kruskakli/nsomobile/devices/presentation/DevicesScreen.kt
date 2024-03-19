@@ -218,7 +218,7 @@ fun DeviceHeadField(
             text = text,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            style = MaterialTheme.typography.bodySmall,
+            style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(start = 4.dp, end = 4.dp)
         )
     }

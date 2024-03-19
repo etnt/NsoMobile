@@ -28,8 +28,9 @@ class NsoDevicesRepositoryImpl(
             port,
             user,
             password,
-            "tailf-ncs:devices?depth=4",
-            NsoDevices.serializer()
+            "restconf/data/tailf-ncs:devices",
+            NsoDevices.serializer(),
+            mapOf("depth" to "4")
         )
     }
 }

@@ -30,7 +30,8 @@ class SysCountersRepositoryImpl(
             user,
             password,
             "restconf/data/tailf-ncs:metric/sysadmin/counter",
-            NsoSysCounters.serializer()
+            NsoSysCounters.serializer(),
+            emptyMap()
         )
     }
 }

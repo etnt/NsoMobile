@@ -106,7 +106,7 @@ fun Package(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
+                .padding(start = 8.dp, top = 4.dp, end = 8.dp, bottom = 4.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.Start
         ) {
@@ -127,7 +127,7 @@ fun Package(
                     textColor = MaterialTheme.colorScheme.onSurface,
                     color = MaterialTheme.colorScheme.surface,
                     modifier = Modifier
-                        .padding(start = 8.dp, end = 8.dp)
+                        .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
                 )
             }
             Divider()
@@ -146,7 +146,7 @@ fun PackagesHeadField(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = { toggleShow() })
-            .padding(6.dp),
+            .padding(bottom = 4.dp),
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
