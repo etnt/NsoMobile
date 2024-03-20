@@ -1,14 +1,18 @@
 package se.kruskakli.nsomobile.progress.data
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Event(
     val context: String,
     val datastore: String,
     val message: String,
-    val parent-span-id: String,
-    val session-id: String,
-    val span-id: String,
+    @SerialName("parent-span-id") val parentSpanId: String? = null,
+    @SerialName("session-id") val sessionId: String,
+    @SerialName("span-id") val spanId: String,
     val timer: String,
     val timestamp: String,
-    val trace-id: String,
-    val transaction-id: String
+    @SerialName("trace-id") val traceId: String,
+    @SerialName("transaction-id") val transactionId: String
 )

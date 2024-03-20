@@ -1,5 +1,8 @@
 package se.kruskakli.nsomobile.progress.data
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
 
 /*
   /restconf/data/tailf-progress:progress?unhide=debug
@@ -34,6 +37,7 @@ package se.kruskakli.nsomobile.progress.data
 }
 */
 
+@Serializable
 data class NsoProgress(
-    val tailf-progress:progress: Progress
+    @SerialName("tailf-progress:progress") val nsoProgress: Progress
 )

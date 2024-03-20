@@ -6,6 +6,7 @@ enum class TabPage {
     Alarms,
     Packages,
     Devices,
+    Progress,
     // Error, About,
     //Processes, Listeners, EtsTables, Allocators,
     SysCounters,

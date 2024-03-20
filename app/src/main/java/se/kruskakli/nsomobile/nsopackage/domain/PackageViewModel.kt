@@ -60,7 +60,7 @@ class PackageViewModel(
         val systemInfo = systemInfoRepository.getSystemInfo()
         if (systemInfo != null) {
             viewModelScope.launch {
-                val result = packageRepository.getNsoPackages(
+                packageRepository.getNsoPackages(
                     systemInfo.ip,
                     systemInfo.port,
                     systemInfo.user,
@@ -72,7 +72,7 @@ class PackageViewModel(
                         newPackages.add(p)
                     }
                     DataState.Success(newPackages).also { newState ->
-                        Log.d("PackageViewModel", "getNsoPackages onSuccess: ${newState.getSuccesData()}")
+                        //Log.d("PackageViewModel", "getNsoPackages onSuccess: ${newState.getSuccesData()}")
                         _nsoPackages.value = newState
                     }
                     // Check if the nso_dbg package is installed
@@ -84,7 +84,7 @@ class PackageViewModel(
                     }
                 }.onFailure {
                     DataState.Failure(it).also { newState ->
-                        Log.d("PackageViewModel", "getNsoPackages onFailure: ${newState.getFailureMessage()}")
+                        //Log.d("PackageViewModel", "getNsoPackages onFailure: ${newState.getFailureMessage()}")
                         _nsoPackages.value = newState
                     }
                     _nsoDbgEnabled.value = false

@@ -71,6 +71,7 @@ import se.kruskakli.nsomobile.main.domain.MainIntent
 import se.kruskakli.nsomobile.main.domain.MainViewModel
 import se.kruskakli.nsomobile.main.domain.TabPage
 import se.kruskakli.nsomobile.nsopackage.presentation.PackagesScreen
+import se.kruskakli.nsomobile.progress.presentation.ProgressScreen
 import se.kruskakli.nsomobile.releasenote.presentation.ReleaseNoteScreen
 import se.kruskakli.nsomobile.settings.domain.SettingsIntent
 import se.kruskakli.nsomobile.settings.domain.SettingsViewModel
@@ -267,6 +268,11 @@ fun MainScreen(
                     TabPage.Devices -> {
                         viewModel.handleIntent(MainIntent.EnterScreen(TabPage.Devices))
                         DevicesScreen()
+                    }
+
+                    TabPage.Progress -> {
+                        viewModel.handleIntent(MainIntent.EnterScreen(TabPage.Progress))
+                        ProgressScreen()
                     }
 
                     /*
@@ -495,6 +501,13 @@ private fun MenuItems(): List<NavigationItem> {
             page = TabPage.Packages,
             selectedIcon = RememberPackages(),
             unSelectedIcon = RememberPackages()
+        ),
+
+        NavigationItem(
+            title = "Progress",
+            page = TabPage.Progress,
+            selectedIcon = ImageVector.vectorResource(id = R.drawable.ic_counters),
+            unSelectedIcon = ImageVector.vectorResource(id = R.drawable.ic_counters),
         ),
 
         NavigationItem(

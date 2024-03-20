@@ -70,7 +70,7 @@ class NetworkRepositoryImpl : NetworkRepository, KoinComponent {
                 }
             }
             val content = response.bodyAsText()
-            Log.d("NetworkRepository", "apiCall: content: $content")
+            //Log.d("NetworkRepository", "apiCall: content: $content")
             val json = Json { ignoreUnknownKeys = true }
             json.decodeFromString(serializer, content)
         }

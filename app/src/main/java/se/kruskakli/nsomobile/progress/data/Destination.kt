@@ -1,5 +1,10 @@
 package se.kruskakli.nsomobile.progress.data
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonObject
+
+@Serializable
 data class Destination(
-    val oper-data: List<Any>
+    @SerialName("oper-data") val operData: JsonObject
 )
