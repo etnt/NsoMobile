@@ -1,6 +1,5 @@
 package se.kruskakli.nsomobile.progress.domain
 
-import kotlinx.serialization.SerialName
 
 data class ProgressUi (
     val trace: List<ProgressTrace>

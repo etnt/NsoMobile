@@ -28,6 +28,9 @@ class ProgressViewModel (
     private val _progress = MutableStateFlow<DataState<ProgressUi>>(DataState.Idle)
     val progress = _progress.asStateFlow()
 
+    private val _progressTree = MutableStateFlow<DataState<MutableMap<String, MutableList<ProgressUi.ProgressEvent>>>>(DataState.Idle)
+    val progressTree = _progressTree.asStateFlow()
+
     init {
         // We only listen for the refresh event that is relevant to us!
         viewModelScope.launch {
@@ -63,20 +66,28 @@ class ProgressViewModel (
                     systemInfo.password
                 ).onSuccess { nsoProgress ->
                     val progressTraces = nsoProgress.nsoProgress.toProgressUi()
+                    val progressTree = mutableMapOf<String, MutableList<ProgressUi.ProgressEvent>>()
                     for (progressTrace in progressTraces.trace) {
+                        val name = progressTrace.name
+                        val treeEvents: MutableList<ProgressUi.ProgressEvent> = mutableListOf()
                         val eventsByOperation =
                             progressTrace.events.groupBy { it.traceId + "_" + it.transactionId }
                         for ((operationId, events) in eventsByOperation) {
                             // Build tree structure based on parentSpanId and spanId
-                            Log.d("ProgressViewModel", "getProgress: $operationId - ${events}")
+                            //Log.d("ProgressViewModel", "getProgress: $operationId - ${events}")
                             val rootEvents = buildTreeStructure(events)
-                            Log.d("ProgressViewModel", "getProgress 2: $operationId - ${rootEvents}")
+                            rootEvents.forEach { treeEvents.add(it) }
+                            //Log.d("ProgressViewModel", "getProgress 2: $operationId - ${rootEvents}")
 
                             // Calculate elapsed time and display messages
                             displayOperationDetails(rootEvents)
                         }
+                        progressTree.put(name, treeEvents)
                     }
-
+                    DataState.Success(progressTree).also { newState ->
+                        Log.d("ProgressViewModel", "ProgressTree: $progressTree")
+                        _progressTree.value = newState
+                    }
                     DataState.Success(nsoProgress.nsoProgress.toProgressUi()).also { it ->
                         Log.d("ProgressViewModel", "getProgress: ${it.getSuccesData()}")
                         _progress.value = it
@@ -106,7 +117,7 @@ class ProgressViewModel (
         return roots
     }
 
-    private fun parseTimestamp(timestamp: String): OffsetDateTime {
+    fun parseTimestamp(timestamp: String): OffsetDateTime {
         // Ensure the fractional part is exactly six digits by padding or truncating as necessary
         val normalizedTimestamp = timestamp.replace(Regex("(\\.\\d{1,6})")) { matchResult ->
             matchResult.value.padEnd(7, '0') // Pad the fractional part (including the dot) to 7 characters
@@ -116,7 +127,7 @@ class ProgressViewModel (
         return OffsetDateTime.parse(normalizedTimestamp, formatter)
     }
 
-    private fun calculateElapsedTime(start: OffsetDateTime, end: OffsetDateTime): Double {
+    fun calculateElapsedTime(start: OffsetDateTime, end: OffsetDateTime): Double {
         // Calculate the duration between the two OffsetDateTime instances
         val duration = Duration.between(start, end)
         // Convert the duration to seconds (as a double) and return
@@ -138,7 +149,7 @@ class ProgressViewModel (
             }
 
             // Display the current event's details
-            Log.d("displayOperationsDetails","$padding- ${event.message} [Elapsed Time: $elapsedTime s]")
+            Log.d("displayOperationsDetails","$padding- ${event.message} [Elapsed Time: $elapsedTime s] span-id(${event.spanId}) trace-id(${event.traceId}) transaction-id(${event.transactionId})")
 
             // Recursively display child events, if any
             displayOperationDetails(event.children, level + 1)
