@@ -14,6 +14,7 @@ fun Progress.toProgressUi(): ProgressUi {
                         context = event.context,
                         datastore = event.datastore,
                         message = event.message,
+                        duration = event.duration?.let { it } ?: "",
                         parentSpanId = event.parentSpanId?.let { it } ?: "",
                         sessionId = event.sessionId,
                         spanId = event.spanId,

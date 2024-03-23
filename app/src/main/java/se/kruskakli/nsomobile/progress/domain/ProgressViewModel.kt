@@ -13,6 +13,8 @@ import se.kruskakli.nsomobile.main.domain.TabPage
 import se.kruskakli.nsomobile.nsopackage.domain.PackageIntent
 import se.kruskakli.nsomobile.progress.data.NsoProgressRepository
 import se.kruskakli.nsomobile.settings.domain.SystemInfoRepository
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
@@ -130,8 +132,12 @@ class ProgressViewModel (
     fun calculateElapsedTime(start: OffsetDateTime, end: OffsetDateTime): Double {
         // Calculate the duration between the two OffsetDateTime instances
         val duration = Duration.between(start, end)
-        // Convert the duration to seconds (as a double) and return
-        return abs(duration.toMillis() / 1000.0)
+        // Convert the duration to milliseconds
+        val durationMillis = BigDecimal(duration.toMillis())
+        // Divide by 1000.0 to convert to seconds, rounding to 3 decimal places
+        val durationSeconds = durationMillis.divide(BigDecimal(1000), 3, RoundingMode.HALF_UP)
+        // Return the result as a double
+        return durationSeconds.toDouble()
     }
 
     private fun displayOperationDetails(rootEvents: List<ProgressUi.ProgressEvent>, level: Int = 0) {

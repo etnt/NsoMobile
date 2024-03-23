@@ -8,6 +8,7 @@ data class Event(
     val context: String,
     val datastore: String,
     val message: String,
+    val duration: String? = null,
     @SerialName("parent-span-id") val parentSpanId: String? = null,
     @SerialName("session-id") val sessionId: String,
     @SerialName("span-id") val spanId: String,

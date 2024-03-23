@@ -13,6 +13,7 @@ data class ProgressUi (
         val context: String,
         val datastore: String,
         val message: String,
+        val duration: String,
         val parentSpanId: String,
         val sessionId: String,
         val spanId: String,
