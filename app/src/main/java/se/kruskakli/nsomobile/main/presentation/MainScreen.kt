@@ -506,8 +506,8 @@ private fun MenuItems(): List<NavigationItem> {
         NavigationItem(
             title = "Progress",
             page = TabPage.Progress,
-            selectedIcon = ImageVector.vectorResource(id = R.drawable.ic_counters),
-            unSelectedIcon = ImageVector.vectorResource(id = R.drawable.ic_counters),
+            selectedIcon = ImageVector.vectorResource(id = R.drawable.ic_progress),
+            unSelectedIcon = ImageVector.vectorResource(id = R.drawable.ic_progress),
         ),
 
         NavigationItem(
