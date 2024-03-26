@@ -3,6 +3,7 @@ package se.kruskakli.nsomobile.progress.presentation
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,6 +15,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -61,9 +64,22 @@ fun ProgressContent(
                     modifier = Modifier
                         .fillMaxSize()
                 ) {
-                    val flattenedList = progressTree.getSuccesData().values.flatten()
-                    items(flattenedList) {  rootEvent->
-                        DisplayOperationDetails(viewModel, listOf(rootEvent))
+                    items(it.entries.toList()) {  entry ->
+                        val key = entry.key
+                        val value = entry.value
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            contentAlignment = Center
+                        ) {
+                            Text(
+                                text = key,
+                                fontWeight = FontWeight.Bold,
+                            )
+                        }
+                        value.forEach { event ->
+                            DisplayOperationDetails(viewModel, listOf(event))
+                        }
                     }
                 }
             },
