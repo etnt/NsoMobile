@@ -96,8 +96,9 @@ class ProgressViewModel (
                     }
                 }.onFailure {
                     DataState.Failure(it).also { newState ->
-                        Log.d("ProgressViewModel", "getProgress: ${newState.getFailureMessage()}")
+                        Log.d("ProgressViewModel", "getProgress failure: ${newState.getFailureMessage()}")
                         _progress.value = newState
+                        _progressTree.value = newState
                     }
                 }
             }

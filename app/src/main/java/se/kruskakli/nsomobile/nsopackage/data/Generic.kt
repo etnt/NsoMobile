@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Generic(
-    val javaClassName: String,
-    val nedId: String
+    val javaClassName: String? = null,
+    val nedId: String? = null
 )

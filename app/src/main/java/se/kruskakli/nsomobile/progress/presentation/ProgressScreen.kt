@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import org.koin.androidx.compose.koinViewModel
 import se.kruskakli.nsomobile.Divider
 import se.kruskakli.nsomobile.core.presentation.CenteredProgressIndicator
+import se.kruskakli.nsomobile.core.presentation.OnFailureMessageBox
 import se.kruskakli.nsomobile.progress.domain.ProgressIntent
 import se.kruskakli.nsomobile.progress.domain.ProgressUi
 import se.kruskakli.nsomobile.progress.domain.ProgressViewModel
@@ -67,7 +68,7 @@ fun ProgressContent(
                 }
             },
             onFailure = {
-                CenteredProgressIndicator()
+                OnFailureMessageBox(it)
             }
         )
     }

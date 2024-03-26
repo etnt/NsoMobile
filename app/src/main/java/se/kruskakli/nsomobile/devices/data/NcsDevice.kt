@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class NcsDevice(
     val name: String,
-    @SerialName("last-connected") val lastConnected: String,
+    @SerialName("last-connected") val lastConnected: String? = null,
     val address: String,
     val port: Int,
     val authgroup: String,

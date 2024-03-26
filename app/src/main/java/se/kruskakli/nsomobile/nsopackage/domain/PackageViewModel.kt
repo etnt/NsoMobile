@@ -68,6 +68,7 @@ class PackageViewModel(
                 ).onSuccess {
                     val newPackages = mutableListOf<PackageUi>()
                     it.tailfNcsPackages.nsoPackages.forEach() {
+                        Log.d("PackageViewModel", "getNsoPackages: ${it}")
                         val p = it.toPackageUi()
                         newPackages.add(p)
                     }
@@ -84,7 +85,7 @@ class PackageViewModel(
                     }
                 }.onFailure {
                     DataState.Failure(it).also { newState ->
-                        //Log.d("PackageViewModel", "getNsoPackages onFailure: ${newState.getFailureMessage()}")
+                        Log.d("PackageViewModel", "getNsoPackages onFailure: ${newState.getFailureMessage()}")
                         _nsoPackages.value = newState
                     }
                     _nsoDbgEnabled.value = false

@@ -21,7 +21,7 @@ fun NcsDevice.toDeviceUi(): DeviceUi {
     )
     return DeviceUi(
         name = name,
-        lastConnected = lastConnected,
+        lastConnected = lastConnected?.let { lastConnected } ?: "",
         address = address,
         port = port.toString(),
         authgroup = authgroup,
