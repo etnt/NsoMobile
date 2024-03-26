@@ -12,16 +12,16 @@ fun Progress.toProgressUi(): ProgressUi {
                 events = trace.event.map { event: Event ->
                     ProgressUi.ProgressEvent(
                         context = event.context,
-                        datastore = event.datastore,
+                        datastore = event.datastore?.let { it } ?: "",
                         message = event.message,
                         duration = event.duration?.let { it } ?: "",
                         parentSpanId = event.parentSpanId?.let { it } ?: "",
-                        sessionId = event.sessionId,
+                        sessionId = event.sessionId?.let { it } ?: "",
                         spanId = event.spanId,
                         timer = event.timer,
                         timestamp = event.timestamp,
                         traceId = event.traceId,
-                        transactionId = event.transactionId
+                        transactionId = event.transactionId?.let { it } ?: ""
                     )
                 }
             )

@@ -8,7 +8,10 @@ enum class TabPage {
     Devices,
     Progress,
     // Error, About,
-    //Processes, Listeners, EtsTables, Allocators,
+    Processes,
+    Listeners,
+    EtsTables,
+    Allocators,
     SysCounters,
     ReleaseNotes
 }

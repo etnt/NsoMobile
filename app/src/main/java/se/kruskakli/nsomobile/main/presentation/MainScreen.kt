@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.Build
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.DropdownMenu
@@ -80,6 +81,7 @@ import se.kruskakli.nsomobile.syscounters.presentation.SysCountersScreen
 import se.kruskakli.presentation.RememberAlarms
 import se.kruskakli.presentation.RememberDevices
 import se.kruskakli.presentation.RememberPackages
+import se.kruskakli.nsomobile.nsopackage.domain.PackageViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -107,7 +109,9 @@ fun MainScreen(
     var selectedItemIndex by rememberSaveable { mutableStateOf(0) }
     val menuItems = MenuItems()
 
-    val nsoDbgEnabled = false    // FIXME
+    val packageViewModel = koinViewModel<PackageViewModel>()
+    val nsoDbgEnabled by packageViewModel.nsoDbgEnabled.collectAsState()
+
 
     var page by remember { mutableStateOf(TabPage.Home) }
 
@@ -280,47 +284,32 @@ fun MainScreen(
                     TabPage.About -> {
                         AboutPage(releaseNotes)
                     }
-
+                    */
                     TabPage.Listeners -> {
-                        viewModel.handleIntent(MainIntent.ShowInet)
-                        if (loading) {
-                            LoadingState()
-                        } else {
-                            InetScreen(nsoInet)
-                        }
+                        //viewModel.handleIntent(MainIntent.EnterScreen(TabPage.Listeners))
+                        //InetScreen()
                     }
 
                     TabPage.EtsTables -> {
-                        viewModel.handleIntent(MainIntent.ShowEts)
-                        if (loading) {
-                            LoadingState()
-                        } else {
-                            EtsScreen(nsoEts, viewModel)
-                        }
+                        //viewModel.handleIntent(MainIntent.EnterScreen(TabPage.EtsTables))
+                        //EtsScreen()
                     }
 
                     TabPage.Allocators -> {
-                        viewModel.handleIntent(MainIntent.ShowAllocators)
-                        if (loading) {
-                            LoadingState()
-                        } else {
-                            AllocatorScreen(nsoAllocators)
-                        }
+                        //viewModel.handleIntent(MainIntent.EnterScreen(TabPage.Allocators))
+                        //AllocatorScreen()
                     }
 
                     TabPage.Processes -> {
-                        viewModel.handleIntent(MainIntent.ShowProcesses)
-                        if (loading) {
-                            LoadingState()
-                        } else {
-                            ProcessScreen(nsoProcesses, viewModel)
-                        }
+                        //viewModel.handleIntent(MainIntent.EnterScreen(TabPage.Processes))
+                        //ProcessScreen()
                     }
 
+                    /*
                     TabPage.Error -> {
                         ErrorPage(apiError, viewModel)
                     }
-                     */
+                    */
                 }
             }
         }
@@ -402,7 +391,7 @@ fun CustomNestedMenu(
     Column {
         Row(
             modifier = Modifier
-                .padding(start = 30.dp, bottom = 5.dp),
+                .padding(start = 30.dp, bottom = 10.dp),
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -422,19 +411,19 @@ fun CustomNestedMenu(
         item.subItems.forEach { subItem ->
             Row(
                 modifier = Modifier
-                    .padding(start = 55.dp, bottom = 5.dp),
+                    .padding(start = 55.dp, bottom = 10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
                     imageVector = Icons.Filled.PlayArrow,
                     contentDescription = "SubItem",
-                    modifier = Modifier.size(10.dp),
+                    modifier = Modifier.size(14.dp),
                     tint = MaterialTheme.colorScheme.onSurface
                 )
                 val text = AnnotatedString.Builder().apply {
                     withStyle(
                         style = SpanStyle(
-                            fontSize = MaterialTheme.typography.labelSmall.fontSize,
+                            fontSize = MaterialTheme.typography.labelMedium.fontSize,
                             fontStyle = FontStyle.Italic,
                             color = MaterialTheme.colorScheme.onSurface
                         )
@@ -446,7 +435,7 @@ fun CustomNestedMenu(
                     text = text,
                     onClick = { onClick(subItem.page) },
                     modifier = Modifier
-                        .padding(start = 10.dp)
+                        .padding(start = 14.dp)
                 )
             }
         }
@@ -530,7 +519,7 @@ private fun MenuItems(): List<NavigationItem> {
             selectedIcon = RememberQuestionMark(),
             unSelectedIcon = RememberQuestionMark()
         ),
-
+        */
         NavigationItem(
             title = "Debug",
             selectedIcon = ImageVector.vectorResource(id = R.drawable.ic_bug),
@@ -563,6 +552,5 @@ private fun MenuItems(): List<NavigationItem> {
             )
         )
 
-         */
     )
 }

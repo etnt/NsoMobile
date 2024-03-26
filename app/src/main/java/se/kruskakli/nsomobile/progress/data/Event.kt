@@ -6,14 +6,14 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Event(
     val context: String,
-    val datastore: String,
+    val datastore: String? = null,
     val message: String,
     val duration: String? = null,
     @SerialName("parent-span-id") val parentSpanId: String? = null,
-    @SerialName("session-id") val sessionId: String,
+    @SerialName("session-id") val sessionId: String? = null,
     @SerialName("span-id") val spanId: String,
     val timer: String,
     val timestamp: String,
     @SerialName("trace-id") val traceId: String,
-    @SerialName("transaction-id") val transactionId: String
+    @SerialName("transaction-id") val transactionId: String? = null
 )
