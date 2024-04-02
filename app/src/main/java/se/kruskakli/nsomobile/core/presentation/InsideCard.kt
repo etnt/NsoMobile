@@ -43,7 +43,7 @@ fun InsideCard(
                 Text(
                     text = header,
                     color = textColor,
-                    style = MaterialTheme.typography.titleSmall
+                    style = MaterialTheme.typography.titleMedium
                 )
                 extraContent?.invoke()
             }

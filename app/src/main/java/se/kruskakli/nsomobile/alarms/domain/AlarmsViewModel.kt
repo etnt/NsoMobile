@@ -65,7 +65,7 @@ class AlarmsViewModel(
                         newAlarms.add(p)
                     }
                     DataState.Success(newAlarms).also { newState ->
-                        Log.d("AlarmsViewModel", "getAlarmList newState: ${newState.getSuccesData()}")
+                        Log.d("AlarmsViewModel", "getAlarmList newState: ${newState.getSuccessData()}")
                         _nsoAlarms.value = newState
                     }
                 }.onFailure {

@@ -70,7 +70,7 @@ class SysCountersViewModel(
                 ).onSuccess {
                     val sysCountersUi = it.sysCounters?.toUiModel()
                     DataState.Success(sysCountersUi).also { newState ->
-                        Log.d("SysCountersViewModel", "getSysCounters newState: ${newState.getSuccesData()}")
+                        Log.d("SysCountersViewModel", "getSysCounters newState: ${newState.getSuccessData()}")
                         _sysCounters.value = newState
                     }
                 }.onFailure {

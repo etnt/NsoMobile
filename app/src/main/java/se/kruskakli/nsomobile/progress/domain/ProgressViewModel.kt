@@ -91,7 +91,7 @@ class ProgressViewModel (
                         _progressTree.value = newState
                     }
                     DataState.Success(nsoProgress.nsoProgress.toProgressUi()).also { it ->
-                        Log.d("ProgressViewModel", "getProgress: ${it.getSuccesData()}")
+                        Log.d("ProgressViewModel", "getProgress: ${it.getSuccessData()}")
                         _progress.value = it
                     }
                 }.onFailure {

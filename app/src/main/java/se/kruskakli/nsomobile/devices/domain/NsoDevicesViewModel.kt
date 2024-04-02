@@ -11,7 +11,6 @@ import se.kruskakli.nsomobile.core.domain.DataState
 import se.kruskakli.nsomobile.devices.data.NsoDevicesRepository
 import se.kruskakli.nsomobile.main.domain.EventChannel
 import se.kruskakli.nsomobile.main.domain.TabPage
-import se.kruskakli.nsomobile.nsopackage.domain.PackageIntent
 import se.kruskakli.nsomobile.settings.domain.SystemInfoRepository
 
 class DevicesViewModel(
@@ -63,7 +62,7 @@ class DevicesViewModel(
                         newDevices.add(p)
                     }
                     DataState.Success(newDevices).also { newState ->
-                        Log.d("PackageViewModel", "getNsoDevices onSuccess: ${newState.getSuccesData()}")
+                        Log.d("PackageViewModel", "getNsoDevices onSuccess: ${newState.getSuccessData()}")
                         _nsoDevices.value = newState
                     }
                 }.onFailure {

@@ -6,6 +6,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 import se.kruskakli.nsomobile.alarms.di.alarmsModule
 import se.kruskakli.nsomobile.core.di.networkModule
+import se.kruskakli.nsomobile.debug.processes.di.nsoProcessesModule
 import se.kruskakli.nsomobile.devices.di.nsoDevicesModule
 import se.kruskakli.nsomobile.main.di.mainModule
 import se.kruskakli.nsomobile.nsopackage.di.nsoPackageModule
@@ -30,7 +31,8 @@ class NsoMobileApplication() : Application() {
                 alarmsModule,
                 nsoPackageModule,
                 nsoDevicesModule,
-                nsoProgressModule
+                nsoProgressModule,
+                nsoProcessesModule
             )
         }
     }

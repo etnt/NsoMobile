@@ -73,7 +73,7 @@ class PackageViewModel(
                         newPackages.add(p)
                     }
                     DataState.Success(newPackages).also { newState ->
-                        //Log.d("PackageViewModel", "getNsoPackages onSuccess: ${newState.getSuccesData()}")
+                        //Log.d("PackageViewModel", "getNsoPackages onSuccess: ${newState.getSuccessData()}")
                         _nsoPackages.value = newState
                     }
                     // Check if the nso_dbg package is installed

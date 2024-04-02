@@ -17,10 +17,10 @@ sealed class DataState<out T> {
     fun isSuccess() = this is Success
     fun isFailure() = this is Failure
 
-    fun getSuccesData() = (this as Success).data
+    fun getSuccessData() = (this as Success).data
     fun getSuccessDataOrNull() : T? {
         return try {
-            getSuccesData()
+            getSuccessData()
         } catch (e: Exception) {
             null
         }

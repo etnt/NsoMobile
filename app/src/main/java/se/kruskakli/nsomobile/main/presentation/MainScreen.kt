@@ -66,6 +66,7 @@ import org.koin.androidx.compose.koinViewModel
 import se.kruskakli.nsomobile.Divider
 import se.kruskakli.nsomobile.R
 import se.kruskakli.nsomobile.alarms.presentation.AlarmsScreen
+import se.kruskakli.nsomobile.debug.processes.presentation.ProcessesScreen
 import se.kruskakli.nsomobile.devices.presentation.DevicesScreen
 import se.kruskakli.nsomobile.main.domain.EventChannel
 import se.kruskakli.nsomobile.main.domain.MainIntent
@@ -301,8 +302,8 @@ fun MainScreen(
                     }
 
                     TabPage.Processes -> {
-                        //viewModel.handleIntent(MainIntent.EnterScreen(TabPage.Processes))
-                        //ProcessScreen()
+                        viewModel.handleIntent(MainIntent.EnterScreen(TabPage.Processes))
+                        ProcessesScreen()
                     }
 
                     /*
