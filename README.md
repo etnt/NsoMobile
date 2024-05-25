@@ -71,3 +71,7 @@ needed in the codebase.
 
 5. `presentation`: Add the beginning of the *screen* , i.e our User Interface. It will make use of the
 View Model for subscribing to the data and the Intent Interface for communicating with the View Model.
+
+This will get you into a starting point for your new functionality that will compile. For an example,
+look at the git tag: `adding-new-functionality-example`.
+
