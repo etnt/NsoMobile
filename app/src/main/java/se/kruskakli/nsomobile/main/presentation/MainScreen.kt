@@ -66,6 +66,7 @@ import org.koin.androidx.compose.koinViewModel
 import se.kruskakli.nsomobile.Divider
 import se.kruskakli.nsomobile.R
 import se.kruskakli.nsomobile.alarms.presentation.AlarmsScreen
+import se.kruskakli.nsomobile.debug.inet.presentation.InetScreen
 import se.kruskakli.nsomobile.debug.processes.presentation.ProcessesScreen
 import se.kruskakli.nsomobile.devices.presentation.DevicesScreen
 import se.kruskakli.nsomobile.main.domain.EventChannel
@@ -287,8 +288,8 @@ fun MainScreen(
                     }
                     */
                     TabPage.Listeners -> {
-                        //viewModel.handleIntent(MainIntent.EnterScreen(TabPage.Listeners))
-                        //InetScreen()
+                        viewModel.handleIntent(MainIntent.EnterScreen(TabPage.Listeners))
+                        InetScreen()
                     }
 
                     TabPage.EtsTables -> {

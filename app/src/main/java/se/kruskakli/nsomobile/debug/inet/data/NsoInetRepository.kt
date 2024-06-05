@@ -10,7 +10,7 @@ interface NsoInetRepository {
         port : String,
         user : String,
         password : String
-    ): ApiOperation<NsoInet>
+    ): ApiOperation<Inet>
 }
 
 class NsoInetRepositoryImpl(
@@ -22,14 +22,14 @@ class NsoInetRepositoryImpl(
         port : String,
         user : String,
         password : String
-    ): ApiOperation<NsoInet> {
-        return networkRepository.apiCall<NsoInet>(
+    ): ApiOperation<Inet> {
+        return networkRepository.apiCall<Inet>(
             host,
             port,
             user,
             password,
             "restconf/data/nso-dbg%3Anso-dbg/beam-state/inet",
-            NsoInet.serializer(),
+            Inet.serializer(),
             emptyMap()
         )
     }

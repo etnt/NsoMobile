@@ -67,7 +67,7 @@ between the `presentation` and `domain` layer.
 
 4. `di`: Create the dependency injection Module. This code is defining a Koin module that should contain
 a singleton instance of the Repository and the ViewModel instance, both of which can be injected wherever
-needed in the codebase.
+needed in the codebase. Don't forget to add the new module to the `NsoMobileApplication.kt` file.
 
 5. `presentation`: Add the beginning of the *screen* , i.e our User Interface. It will make use of the
 View Model for subscribing to the data and the Intent Interface for communicating with the View Model.

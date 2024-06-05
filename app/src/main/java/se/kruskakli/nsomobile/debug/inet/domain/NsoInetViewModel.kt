@@ -27,12 +27,27 @@ class NsoInetViewModel(
     val nsoInet = _nsoInet.asStateFlow()
 
 
+    init {
+        // We only listen for the refresh event that is relevant to us!
+        viewModelScope.launch {
+            EventChannel.refreshFlow
+                .filter { it == TabPage.Listeners } // Listen only to relevant screen refreshes
+                .collect {
+                    refreshContent()
+                }
+        }
+    }
+
     fun handleIntent(intent: NsoInetIntent) {
         when (intent) {
             is NsoInetIntent.ShowInet -> {
                 getNsoInet()
             }
         }
+    }
+
+    private fun refreshContent() {
+        getNsoInet()
     }
 
     private fun getNsoInet() {
@@ -47,7 +62,7 @@ class NsoInetViewModel(
                     password = systemInfo.password
                 ).onSuccess {
                     val newInet = mutableListOf<InetUi>()
-                    it.all.forEach() {
+                    it.nsoInet.all.forEach() {
                         val p = it.toInetUi()
                         newInet.add(p)
                     }
