@@ -1,5 +1,30 @@
 [
   {
+    "version": "0.3.0",
+    "date": "2024-06-10",
+    "textPieces": [
+      {
+        "type": "Paragraph",
+        "text": "This release has a few improvements of the User Interface:"
+      },
+      {
+        "type": "BulletList",
+        "items": [
+          "Settings page",
+          "Progress trace info"
+        ]
+      },
+      {
+        "type": "Paragraph",
+        "text": "From the Settings page it is now possible to specify a number of systems for easy access and Progress trace info can now be inspected."
+      },
+      {
+        "type": "Paragraph",
+        "text": "Internally, the code and its organization has been completely refactored and/or rewritten to make it easier to add new features and to make the code more maintainable."
+      }
+    ]
+  },
+  {
     "version": "0.2.0",
     "date": "2024-02-17",
     "textPieces": [
@@ -9,11 +34,13 @@
       },
       {
         "type": "BulletList",
-        "items": ["View alarms",
-                  "View devices",
-                  "View packages",
-                  "View system counters",
-                  "View debug info"]
+        "items": [
+          "View alarms",
+          "View devices",
+          "View packages",
+          "View system counters",
+          "View debug info"
+        ]
       },
       {
         "type": "Paragraph",

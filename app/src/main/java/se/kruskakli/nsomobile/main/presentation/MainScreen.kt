@@ -66,6 +66,7 @@ import org.koin.androidx.compose.koinViewModel
 import se.kruskakli.nsomobile.Divider
 import se.kruskakli.nsomobile.R
 import se.kruskakli.nsomobile.alarms.presentation.AlarmsScreen
+import se.kruskakli.nsomobile.debug.allocators.presentation.AllocatorsScreen
 import se.kruskakli.nsomobile.debug.ets.presentation.EtsScreen
 import se.kruskakli.nsomobile.debug.inet.presentation.InetScreen
 import se.kruskakli.nsomobile.debug.processes.presentation.ProcessesScreen
@@ -299,8 +300,8 @@ fun MainScreen(
                     }
 
                     TabPage.Allocators -> {
-                        //viewModel.handleIntent(MainIntent.EnterScreen(TabPage.Allocators))
-                        //AllocatorScreen()
+                        viewModel.handleIntent(MainIntent.EnterScreen(TabPage.Allocators))
+                        AllocatorsScreen()
                     }
 
                     TabPage.Processes -> {

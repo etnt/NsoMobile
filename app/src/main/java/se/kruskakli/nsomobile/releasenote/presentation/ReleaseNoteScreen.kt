@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,13 +44,13 @@ fun ReleaseNoteScreen(
 fun ReleaseNoteContent(
     releaseNotes: List<ReleaseNote>
 ) {
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        releaseNotes.forEach { releaseNote ->
+        items(releaseNotes) { releaseNote ->
             val cards: List<@Composable () -> Unit> = listOf(
                 {
                     TextDisplay(releaseNote.textPieces)
