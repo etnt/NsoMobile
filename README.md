@@ -5,6 +5,8 @@ This is an experimental Android App that can retrieve
 data from a running Cisco NSO system over the RESTCONF
 interface.
 
+A video demo of Nso-Mobile can be found [here](https://youtu.be/z4W_2bIBQtE?si=TUG8FgeOrSeuAx6y)
+
 Currently you can retrieve information about:
 
 * Devices
